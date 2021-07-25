@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Front;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\Front\StyListCollection;
 use App\Http\Resources\Front\StyListProductCollection;
+use App\Models\Product;
 use App\Models\Stylist;
 use App\Models\StylistProduct;
 use Illuminate\Http\Request;
@@ -19,9 +20,8 @@ class StylistProductController extends Controller
      */
     public function index()
     {
-        auth()->loginUsingId(4);
-        $stylist_id=Stylist::query()->where('user_id',auth()->user()->id)->pluck('id');
-        $stylistProduct=StylistProduct::query()->where('stylist_id',$stylist_id)->get();
+        $stylist=StyList::query()->where('user_id',auth()->user()->id)->pluck('id');
+        $stylistProduct=StylistProduct::query()->where('stylist_id',$stylist)->get();
         return response()->json([
             'status'=>'ok',
             'date'=>StyListProductCollection::collection($stylistProduct)
@@ -51,7 +51,7 @@ class StylistProductController extends Controller
     {
         $data=[
             'product_id'=>$request->product_id,
-            'stylist_id'=>$request->stylist_id,
+            'stylist_id'=>auth()->user()->id,
             'description'=>$request->description
         ];
         $stylistProduct=StylistProduct::create($data);
@@ -83,15 +83,20 @@ class StylistProductController extends Controller
      */
     public function edit(StylistProduct $productStylist)
     {
-        auth()->loginUsingId(1);
-        if($productStylist->stylist->user_id === auth()->user()->id) {
+
+        if ($productStylist->stylist->user_id  === auth()->user()->id){
             return response()->json([
                 'status'=>'ok',
                 'data'=>new StyListProductCollection($productStylist)
             ]);
         }
-
+        else{
+            return response()->json([
+                'status'=>'Error',
+                'massage'=>'شما دسترسی ندارید',
+            ]);
         }
+    }
 
     /**
      * Update the specified resource in storage.
@@ -102,16 +107,17 @@ class StylistProductController extends Controller
      */
     public function update(Request $request, StylistProduct $productStylist)
     {
-        auth()->loginUsingId(1);
-
-        if($productStylist->stylist->user_id === auth()->user()->id) {
-            $data = [
-                'product_id' => $request->product_id,
-                'stylist_id' => $request->stylist_id,
-                'description' => $request->description
+        if ($productStylist->stylist->user_id  === auth()->user()->id){
+            $data=[
+                'description'=>$request->description
             ];
             $productStylist->update($data);
-            dd('yes');
+        }
+        else{
+            return response()->json([
+                'status'=>'Error',
+                'massage'=>'شما دسترسی ندارید',
+            ],403);
         }
     }
 
@@ -123,9 +129,14 @@ class StylistProductController extends Controller
      */
     public function destroy(StylistProduct $productStylist)
     {
-        auth()->loginUsingId(1);
         if($productStylist->stylist->user_id === auth()->user()->id) {
             $productStylist->delete();
+        }
+        else{
+            return response()->json([
+                'status'=>'Error',
+                'massage'=>'شما دسترسی ندارید',
+            ],403);
         }
     }
 }

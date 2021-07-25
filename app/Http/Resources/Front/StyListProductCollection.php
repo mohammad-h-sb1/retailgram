@@ -16,8 +16,8 @@ class StyListProductCollection extends JsonResource
     public function toArray($request)
     {
         return [
-//            'product'=>new ProductCollection($this->product),
-            'stylists'=>new StyListCollection($this->stylist),
+            'product'=>$this->product,
+            'stylists'=>$this->stylist,
             'description'=>$this->description
         ];
     }

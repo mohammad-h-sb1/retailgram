@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources\Front;
 
+use App\Http\Controllers\Front\StylistProductController;
 use App\Http\Resources\Admin\ProductRatingCollection;
 use App\Http\Resources\Admin\SizeCollection;
 use App\Models\CenterShop;
@@ -34,7 +35,6 @@ class ProductCollection extends JsonResource
             'created_at'=>(string)$this->created_at,
             'img'=>ImageCollection::collection($this->images),
             'stylistProduct'=>StyListProductCollection::collection($this->StylistProduct)
-
         ];
     }
 }

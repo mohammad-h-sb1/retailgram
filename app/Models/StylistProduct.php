@@ -9,7 +9,7 @@ class StylistProduct extends Model
 {
     use HasFactory;
     protected $guarded=[];
-
+    protected $table='product_stylist';
     public function stylist()
     {
         return $this->belongsTo(Stylist::class);

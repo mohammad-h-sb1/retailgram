@@ -267,107 +267,106 @@ Route::middleware('auth:api')->group(function () {
             Route::get('/show/{stylist}', [AdminStylist::class, 'show'])->middleware('checkGate:show_stylist_admin');
             Route::delete('/delete/{stylist}', [AdminStylist::class, 'delete'])->middleware('checkGate:delete_stylist_admin');
         });
-
     });
 
-//    Route::name('admin_center')->group(function (){
-////    //admin center shop
-//        Route::prefix('shop')->name('shop')->group(function (){
-//            Route::get('/',[ShopController::class,'index'])->middleware('checkGate:index_shop_admin_center');
-//            Route::post('/store',[ShopController::class,'store'])->middleware('checkGate:store_shop_admin_center');
-//            Route::get('/show/{shop}',[ShopController::class,'show'])->middleware('checkGate:show_shop_admin_center');
-//            Route::get('/edit/{shop}',[ShopController::class,'edit'])->middleware('checkGate:edit_shop_admin_center');
-//            Route::put('/update/{shop}',[ShopController::class,'update'])->middleware('checkGate:update_shop_admin_center');
-//            Route::delete('/delete/{shop}',[ShopController::class,'destroy'])->middleware('checkGate:delete_shop_admin_center');
-//            Route::post('/status/{id}',[ShopController::class,'status'])->middleware('checkGate:status_customer_club_user');
-//        });
+    Route::name('admin_center')->group(function (){
+//    //admin center shop
+        Route::prefix('shop')->name('shop')->group(function (){
+            Route::get('/',[ShopController::class,'index'])->middleware('checkGate:index_shop_admin_center');
+            Route::post('/store',[ShopController::class,'store'])->middleware('checkGate:store_shop_admin_center');
+            Route::get('/show/{shop}',[ShopController::class,'show'])->middleware('checkGate:show_shop_admin_center');
+            Route::get('/edit/{shop}',[ShopController::class,'edit'])->middleware('checkGate:edit_shop_admin_center');
+            Route::put('/update/{shop}',[ShopController::class,'update'])->middleware('checkGate:update_shop_admin_center');
+            Route::delete('/delete/{shop}',[ShopController::class,'destroy'])->middleware('checkGate:delete_shop_admin_center');
+            Route::post('/status/{id}',[ShopController::class,'status'])->middleware('checkGate:status_customer_club_user');
+        });
+
+        //admin center size
+        Route::prefix('size')->name('size')->group(function (){
+            Route::get('/',[AdminSize::class,'index'])->middleware('checkGate:index_shop_admin_center');
+            Route::post('/store',[AdminSize::class,'store'])->middleware('checkGate:store_shop_admin_center');
+            Route::get('/show/{size}',[AdminSize::class,'show'])->middleware('checkGate:show_shop_admin_center');
+            Route::get('/edit/{size}',[AdminSize::class,'edit'])->middleware('checkGate:edit_shop_admin_center');
+            Route::put('/update/{size}',[AdminSize::class,'update'])->middleware('checkGate:update_shop_admin_center');
+            Route::delete('/delete/{size}',[AdminSize::class,'destroy'])->middleware('checkGate:delete_shop_admin_center');
+        });
 //
-//        //admin center size
-//        Route::prefix('size')->name('size')->group(function (){
-//            Route::get('/',[AdminSize::class,'index'])->middleware('checkGate:index_shop_admin_center');
-//            Route::post('/store',[AdminSize::class,'store'])->middleware('checkGate:store_shop_admin_center');
-//            Route::get('/show/{size}',[AdminSize::class,'show'])->middleware('checkGate:show_shop_admin_center');
-//            Route::get('/edit/{size}',[AdminSize::class,'edit'])->middleware('checkGate:edit_shop_admin_center');
-//            Route::put('/update/{size}',[AdminSize::class,'update'])->middleware('checkGate:update_shop_admin_center');
-//            Route::delete('/delete/{size}',[AdminSize::class,'destroy'])->middleware('checkGate:delete_shop_admin_center');
-//        });
-////
-////    //admin center size log
-//        Route::prefix('size/log')->name('size/log')->group(function (){
-//            Route::get('/',[SizeLogController::class,'index'])->middleware('checkGate:index_size_log_center');
-//            Route::post('/store',[SizeLogController::class,'store'])->middleware('checkGate:store_size_log_center');
-//            Route::get('/show/{sizeLog}',[SizeLogController::class,'show'])->middleware('checkGate:show_size_log_center');
-//            Route::get('/edit/{sizeLog}',[SizeLogController::class,'edit'])->middleware('checkGate:edit_size_log_center');
-//            Route::put('/update/{sizeLog}',[SizeLogController::class,'update'])->middleware('checkGate:update_size_log_center');
-//            Route::delete('/delete/{sizeLog}',[SizeLogController::class,'destroy'])->middleware('checkGate:delete_size_log_center');
-//        });
-////
-////    //admin center product sold
-//        Route::prefix('brand/product/sold')->name('brand/product/sold')->group(function (){
-//            Route::get('/',[AdminProductSold::class,'index'])->middleware('checkGate:index_product_sold_center');
-//            Route::get('/store',[AdminProductSold::class,'store'])->middleware('checkGate:store_product_sold_center');
-//            Route::get('/show/{productsSold}',[AdminProductSold::class,'show'])->middleware('checkGate:show_product_sold_center');
-//            Route::get('/edit/{productsSold}',[AdminProductSold::class,'edit'])->middleware('checkGate:edit_product_sold_center');
-//            Route::get('/update/{productsSold}',[AdminProductSold::class,'update'])->middleware('checkGate:update_product_sold_center');
-//            Route::get('/delete/{productsSold}',[AdminProductSold::class,'destroy'])->middleware('checkGate:delete_product_sold_center');
-//            Route::post('status/{id}',[AdminProductSold::class,'status'])->middleware('checkGate:status_product_sold_center');
+//    //admin center size log
+        Route::prefix('size/log')->name('size/log')->group(function (){
+            Route::get('/',[SizeLogController::class,'index'])->middleware('checkGate:index_size_log_center');
+            Route::post('/store',[SizeLogController::class,'store'])->middleware('checkGate:store_size_log_center');
+            Route::get('/show/{sizeLog}',[SizeLogController::class,'show'])->middleware('checkGate:show_size_log_center');
+            Route::get('/edit/{sizeLog}',[SizeLogController::class,'edit'])->middleware('checkGate:edit_size_log_center');
+            Route::put('/update/{sizeLog}',[SizeLogController::class,'update'])->middleware('checkGate:update_size_log_center');
+            Route::delete('/delete/{sizeLog}',[SizeLogController::class,'destroy'])->middleware('checkGate:delete_size_log_center');
+        });
 //
-//        });
-////
-////    //admin center tag
-//        Route::prefix('tag')->name('tag')->group(function (){
-//            Route::get('/',[TagController::class,'index'])->middleware('checkGate:index_tag_center');
-//            Route::post('/store',[TagController::class,'store'])->middleware('checkGate:store_tag_center');
-//            Route::get('/show/{tag}',[TagController::class,'show'])->middleware('checkGate:show_tag_center');
-//            Route::get('/edit/{tag}',[TagController::class,'edit'])->middleware('checkGate:edit_tag_center');
-//            Route::put('/update/{tag}',[TagController::class,'update'])->middleware('checkGate:update_tag_center');
-//            Route::delete('/delete/{tag}',[TagController::class,'destroy'])->middleware('checkGate:delete_tag_center');
-//        });
-////
-////    //admin center property
-//        Route::prefix('property')->name('property')->group(function (){
-//            Route::get('/',[PropertyController::class,'index'])->middleware('checkGate:index_property_admin_center');
-//            Route::post('/store',[PropertyController::class,'store'])->middleware('checkGate:store_property_admin_center');
-//            Route::get('/show/{property}',[PropertyController::class,'show'])->middleware('checkGate:show_property_admin_center');
-//            Route::get('/edit/{property}',[PropertyController::class,'edit'])->middleware('checkGate:edit_property_admin_center');
-//            Route::put('/update/{property}',[PropertyController::class,'update'])->middleware('checkGate:update_property_admin_center');
-//            Route::delete('/delete/{property}',[PropertyController::class,'destroy'])->middleware('checkGate:delete_property_admin_center');
-//        });
-////
-//        //admin center product
-//        Route::prefix('product')->name('product')->group(function (){
-//            Route::get('/',[AdminProduct::class,'index'])->middleware('checkGate:index_property_admin_center');
-//            Route::post('/store',[AdminProduct::class,'store'])->middleware('checkGate:store_property_admin_center');
-//            Route::get('/show/{product}',[AdminProduct::class,'show'])->middleware('checkGate:show_property_admin_center');
-//            Route::get('/edit/{product}',[AdminProduct::class,'edit'])->middleware('checkGate:edit_property_admin_center');
-//            Route::put('/update/{product}',[AdminProduct::class,'update'])->middleware('checkGate:update_property_admin_center');
-//            Route::delete('/delete/{product}',[AdminProduct::class,'destroy'])->middleware('checkGate:delete_property_admin_center');
-//            Route::delete('/status/{id}',[AdminProduct::class,'status'])->middleware('checkGate:status_property_admin_center');
+//    //admin center product sold
+        Route::prefix('brand/product/sold')->name('brand/product/sold')->group(function (){
+            Route::get('/',[AdminProductSold::class,'index'])->middleware('checkGate:index_product_sold_center');
+            Route::get('/store',[AdminProductSold::class,'store'])->middleware('checkGate:store_product_sold_center');
+            Route::get('/show/{productsSold}',[AdminProductSold::class,'show'])->middleware('checkGate:show_product_sold_center');
+            Route::get('/edit/{productsSold}',[AdminProductSold::class,'edit'])->middleware('checkGate:edit_product_sold_center');
+            Route::get('/update/{productsSold}',[AdminProductSold::class,'update'])->middleware('checkGate:update_product_sold_center');
+            Route::get('/delete/{productsSold}',[AdminProductSold::class,'destroy'])->middleware('checkGate:delete_product_sold_center');
+            Route::post('status/{id}',[AdminProductSold::class,'status'])->middleware('checkGate:status_product_sold_center');
+
+        });
 //
-//        });
-////
-////    //admin img
-//        Route::prefix('admin/center/img')->name('admin.center.img.')->group(function (){
-//            Route::get('/',[AdminImage::class,'index'])->middleware();
-//            Route::post('/store',[AdminImage::class,'store'])->middleware('checkGate:index_img_admin_center');
-//            Route::get('/show/{image}',[AdminImage::class,'show'])->middleware('checkGate:store_img_admin_center');
-//            Route::get('/edit/{image}',[AdminImage::class,'edit'])->middleware('checkGate:show_img_admin_center');
-//            Route::put('/update/{image}',[AdminImage::class,'update'])->middleware('checkGate:edit_img_admin_center');
-//            Route::delete('/delete/{image}',[AdminImage::class,'destroy'])->middleware('checkGate:edit_img_admin_center');
-//        });
-////
-////    //admin rating
-//        Route::prefix('productRating')->name('productRating')->group(function (){
-//            Route::get('/',[AdminProductRating::class,'index'])->middleware('checkGate:index_product_rating_admin_center');
-//            Route::post('/store',[AdminProductRating::class,'store'])->middleware('checkGate:store_product_rating_admin_center');
-//            Route::get('/show/{Rating}',[AdminProductRating::class,'show'])->middleware('checkGate:show_product_rating_admin_center');
-//            Route::get('/edit/{Rating}',[AdminProductRating::class,'edit'])->middleware('checkGate:edit_product_rating_admin_center');
-//            Route::put('/update/{Rating}',[AdminProductRating::class,'update'])->middleware('checkGate:update_product_rating_admin_center');
-//            Route::delete('/delete/{Rating}',[AdminProductRating::class,'destroy'])->middleware('checkGate:delete_product_rating_admin_center');
+//    //admin center tag
+        Route::prefix('tag')->name('tag')->group(function (){
+            Route::get('/',[TagController::class,'index'])->middleware('checkGate:index_tag_center');
+            Route::post('/store',[TagController::class,'store'])->middleware('checkGate:store_tag_center');
+            Route::get('/show/{tag}',[TagController::class,'show'])->middleware('checkGate:show_tag_center');
+            Route::get('/edit/{tag}',[TagController::class,'edit'])->middleware('checkGate:edit_tag_center');
+            Route::put('/update/{tag}',[TagController::class,'update'])->middleware('checkGate:update_tag_center');
+            Route::delete('/delete/{tag}',[TagController::class,'destroy'])->middleware('checkGate:delete_tag_center');
+        });
+
+//    //admin center property
+        Route::prefix('property')->name('property')->group(function (){
+            Route::get('/',[PropertyController::class,'index'])->middleware('checkGate:index_property_admin_center');
+            Route::post('/store',[PropertyController::class,'store'])->middleware('checkGate:store_property_admin_center');
+            Route::get('/show/{property}',[PropertyController::class,'show'])->middleware('checkGate:show_property_admin_center');
+            Route::get('/edit/{property}',[PropertyController::class,'edit'])->middleware('checkGate:edit_property_admin_center');
+            Route::put('/update/{property}',[PropertyController::class,'update'])->middleware('checkGate:update_property_admin_center');
+            Route::delete('/delete/{property}',[PropertyController::class,'destroy'])->middleware('checkGate:delete_property_admin_center');
+        });
 //
-//        });
+        //admin center product
+        Route::prefix('product')->name('product')->group(function (){
+            Route::get('/',[AdminProduct::class,'index'])->middleware('checkGate:index_property_admin_center');
+            Route::post('/store',[AdminProduct::class,'store'])->middleware('checkGate:store_property_admin_center');
+            Route::get('/show/{product}',[AdminProduct::class,'show'])->middleware('checkGate:show_property_admin_center');
+            Route::get('/edit/{product}',[AdminProduct::class,'edit'])->middleware('checkGate:edit_property_admin_center');
+            Route::put('/update/{product}',[AdminProduct::class,'update'])->middleware('checkGate:update_property_admin_center');
+            Route::delete('/delete/{product}',[AdminProduct::class,'destroy'])->middleware('checkGate:delete_property_admin_center');
+            Route::delete('/status/{id}',[AdminProduct::class,'status'])->middleware('checkGate:status_property_admin_center');
+
+        });
 //
-//    });
+//    //admin img
+        Route::prefix('admin/center/img')->name('admin.center.img.')->group(function (){
+            Route::get('/',[AdminImage::class,'index'])->middleware();
+            Route::post('/store',[AdminImage::class,'store'])->middleware('checkGate:index_img_admin_center');
+            Route::get('/show/{image}',[AdminImage::class,'show'])->middleware('checkGate:store_img_admin_center');
+            Route::get('/edit/{image}',[AdminImage::class,'edit'])->middleware('checkGate:show_img_admin_center');
+            Route::put('/update/{image}',[AdminImage::class,'update'])->middleware('checkGate:edit_img_admin_center');
+            Route::delete('/delete/{image}',[AdminImage::class,'destroy'])->middleware('checkGate:edit_img_admin_center');
+        });
+//
+//    //admin rating
+        Route::prefix('productRating')->name('productRating')->group(function (){
+            Route::get('/',[AdminProductRating::class,'index'])->middleware('checkGate:index_product_rating_admin_center');
+            Route::post('/store',[AdminProductRating::class,'store'])->middleware('checkGate:store_product_rating_admin_center');
+            Route::get('/show/{Rating}',[AdminProductRating::class,'show'])->middleware('checkGate:show_product_rating_admin_center');
+            Route::get('/edit/{Rating}',[AdminProductRating::class,'edit'])->middleware('checkGate:edit_product_rating_admin_center');
+            Route::put('/update/{Rating}',[AdminProductRating::class,'update'])->middleware('checkGate:update_product_rating_admin_center');
+            Route::delete('/delete/{Rating}',[AdminProductRating::class,'destroy'])->middleware('checkGate:delete_product_rating_admin_center');
+
+        });
+
+    });
 
     Route::name('manager.')->group(function (){
     //manger comment
