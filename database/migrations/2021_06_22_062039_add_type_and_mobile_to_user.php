@@ -25,7 +25,8 @@ class AddTypeAndMobileToUser extends Migration
             $table->string('rating')->default(0)->after('gender');
             $table->string('api_token')->unique()->after('rating')->nullable();
             $table->string('state')->after('api_token')->nullable();
-            $table->string('city')->after('state')->nullable();
+            $table->unsignedBigInteger('province_id')->after('id')->nullable();
+            $table->unsignedBigInteger('city_id')->after('province_id')->nullable();
         });
     }
 

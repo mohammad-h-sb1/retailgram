@@ -26,6 +26,8 @@ class UserCollection extends JsonResource
             'gender'=>$this->gender,
             'rating'=>$this->rating,
             'api_token'=>$this->api_token,
+            'city'=>$this->city,
+            'province_id'=>$this->Provinces,
             'created_at'=>(string)$this->created_at
 
         ];

@@ -18,7 +18,6 @@ class CommentCollection extends JsonResource
     {
         return[
             'user_id'=>new UserCollection($this->user),
-            'product_id'=>new ProductCollection($this->product),
             'description'=>$this->description,
             'power'=>$this->power,
             'weakness'=>$this->weakness,

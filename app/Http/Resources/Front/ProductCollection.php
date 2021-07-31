@@ -23,7 +23,6 @@ class ProductCollection extends JsonResource
         return[
             'center_id'=>new CenterShopCollection($this->centerShop),
             'category_id'=>new CategoryCollection($this->category),
-            'comments'=>CommentCollection::collection($this->comments),
             'productRating'=>ProductRatingCollection::collection($this->productRatings),
             'size'=>SizeCollection::collection($this->sizes),
             'name'=>$this->name,

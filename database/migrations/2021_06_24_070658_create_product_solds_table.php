@@ -18,8 +18,9 @@ class CreateProductSoldsTable extends Migration
             $table->unsignedBigInteger('user_id');
             $table->unsignedBigInteger('center_shop_id');
             $table->unsignedBigInteger('product_id');
+            $table->unsignedBigInteger('province_id');
+            $table->unsignedBigInteger('city_id');
             $table->string('count');
-            $table->string('customer_address');
             $table->boolean('status')->default(false);
             $table->timestamps();
 
@@ -36,6 +37,16 @@ class CreateProductSoldsTable extends Migration
             $table->foreign('product_id')
                 ->references('id')
                 ->on('products')
+                ->onUpdate('CASCADE')
+                ->onDelete('CASCADE');
+            $table->foreign('province_id')
+                ->references('id')
+                ->on('provinces')
+                ->onUpdate('CASCADE')
+                ->onDelete('CASCADE');
+            $table->foreign('city_id')
+                ->references('id')
+                ->on('cities')
                 ->onUpdate('CASCADE')
                 ->onDelete('CASCADE');
         });

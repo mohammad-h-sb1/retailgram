@@ -29,4 +29,9 @@ class Payment extends Model
     {
         return $this->hasMany(Product::class,'id','product_id');
     }
+
+    public function discounts()
+    {
+        return $this->hasMany(Discount::class,);
+    }
 }

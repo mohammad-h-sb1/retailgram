@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Comment extends Model
 {
+
     use HasFactory;
     protected $guarded=[];
 
@@ -24,5 +25,10 @@ class Comment extends Model
     public function parentId()
     {
         return $this->belongsTo(Comment::class,'parent_id','id');
+    }
+
+    public function commentLikes()
+    {
+        return $this->hasMany(CommentLike::class);
     }
 }

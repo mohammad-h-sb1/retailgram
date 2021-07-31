@@ -2,6 +2,8 @@
 
 namespace App\Http\Resources\Front;
 
+use App\Models\Stylist;
+use App\Models\StylistProduct;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Http\Resources\Json\ResourceCollection;
 
@@ -15,10 +17,11 @@ class StyListProductCollection extends JsonResource
      */
     public function toArray($request)
     {
+
         return [
-            'product'=>$this->product,
-            'stylists'=>$this->stylist,
-            'description'=>$this->description
+//            'product'=>$this->product,
+            'description'=>$this->description,
+
         ];
     }
 }

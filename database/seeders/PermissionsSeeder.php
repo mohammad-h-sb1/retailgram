@@ -377,6 +377,129 @@ class PermissionsSeeder extends Seeder
                 'code'=>'delete_stylist_admin',
                 'type'=>'admin'
             ],
+
+            //admin product
+            [
+                'name'=>'دیدنه همه  product',
+                'code'=>'index_product_admin',
+                'type'=>'admin'
+            ],
+            [
+                'name'=>' ایجاد کردن product ',
+                'code'=>'store_product_admin',
+                'type'=>'admin'
+            ],
+            [
+                'name'=>'دیدن product',
+                'code'=>'show_product_admin',
+                'type'=>'admin'
+            ],
+            [
+                'name'=>'دیدن product',
+                'code'=>'edit_product_admin',
+                'type'=>'admin'
+            ],
+            [
+                'name'=>'دیدن product',
+                'code'=>'update_product_admin',
+                'type'=>'admin'
+            ],
+            [
+                'name'=>'حذف product',
+                'code'=>'delete_product_admin',
+                'type'=>'admin'
+            ],
+            [
+                'name'=>'status product',
+                'code'=>'status_product_admin',
+                'type'=>'admin'
+            ],
+
+            //admin shop
+            [
+                'name'=>'دیدنه همه shop',
+                'code'=>'index_shop_admin',
+                'type'=>'admin'
+            ],
+            [
+                'name'=>' ایجاد کردن shop ',
+                'code'=>'store_shop_admin',
+                'type'=>'admin'
+            ],
+            [
+                'name'=>'دیدن shop',
+                'code'=>'show_shop_admin',
+                'type'=>'admin'
+            ],
+            [
+                'name'=>'دیدن shop',
+                'code'=>'edit_shop_admin',
+                'type'=>'admin'
+            ],
+            [
+                'name'=>'دیدن shop',
+                'code'=>'update_shop_admin',
+                'type'=>'admin'
+            ],
+            [
+                'name'=>'حذف shop',
+                'code'=>'delete_shop_admin',
+                'type'=>'admin'
+            ],
+            [
+                'name'=>'status shop',
+                'code'=>'status_shop_admin',
+                'type'=>'admin'
+            ],
+
+            //admin product Sold
+            [
+                'name'=>'دیدنه همه product_Sold',
+                'code'=>'index_product_Sold_admin',
+                'type'=>'admin'
+            ],
+            [
+                'name'=>' ایجاد کردن shop ',
+                'code'=>'store_product_sold_admin',
+                'type'=>'admin'
+            ],
+            [
+                'name'=>'دیدن shop',
+                'code'=>'show_product_sold_center',
+                'type'=>'admin'
+            ],
+            [
+                'name'=>'دیدن shop',
+                'code'=>'edit_product_sold_admin',
+                'type'=>'admin'
+            ],
+            [
+                'name'=>'دیدن shop',
+                'code'=>'update_product_sold_admin',
+                'type'=>'admin'
+            ],
+            [
+                'name'=>'حذف shop',
+                'code'=>'delete_product_sold_admin',
+                'type'=>'admin'
+            ],
+            [
+                'name'=>'status shop',
+                'code'=>'status_product_sold_admin',
+                'type'=>'admin'
+            ],
+
+            //admin city
+            [
+                'name'=>'دیدنه همه شهر ها',
+                'code'=>'index_city_admin',
+                'type'=>'admin'
+            ],
+            [
+                'name'=>'status شهر',
+                'code'=>'status_city_admin',
+                'type'=>'admin'
+            ],
         ];
         foreach ($Permissions as $Permission){
             Permission::updateOrCreate(

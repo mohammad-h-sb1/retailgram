@@ -7,7 +7,13 @@ use Illuminate\Database\Eloquent\Model;
 
 class Like extends Model
 {
+
     use HasFactory;
+    const LIKE_COMMENT='like_comment';
+    const DISLIKE_COMMENT='like_comment' ;
+    const EMPTY='empty';
+    const COMMENT=[self::LIKE_COMMENT,self::DISLIKE_COMMENT,self::EMPTY];
+
     protected $guarded=[];
 
     public function user()
@@ -19,4 +25,5 @@ class Like extends Model
     {
         return $this->belongsTo(Product::class);
     }
+
 }

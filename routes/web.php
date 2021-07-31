@@ -114,3 +114,82 @@ Route::name('admin.')->group(function (){
 //});
 //require __DIR__.'/auth.php';
 
+//Route::name('front.')->group(function (){
+//    Route::middleware('admin_center')->prefix('admin.center')->group(function (){
+////        Route::post('cart/status/{id}',[CartController::class,'status'])->name('shopStatus');
+//    });
+//    Route::middleware('auth')->group(function (){
+////        Route::resource('comment',CommentController::class);
+////        Route::post('/add/to/level/club',[CustomerClubController::class,'addToLevelClub'])->name('add.to.level');
+////        Route::get('tagSizes',[SizeController::class,'index'])->name('index');
+////        Route::get('tagSize/{id}',[SizeController::class,'show'])->name('show');
+////        Route::post('tagColor/{id}',[ColorController::class,'show'])->name('show');
+////        Route::post('tagColor',[ColorController::class,'index'])->name('index');
+////        Route::resource('/like',LikeController::class,);
+////        Route::resource('productsSold',ProductSoldController::class)->except('edit','update',);
+////        Route::resource('question',QuestionController::class);
+////        Route::resource('profile',ProfileController::class)->except('index');
+////        Route::resource('customer/club',CustomerClubController::class)->except('edit','update','store','destroy');
+////        Route::get('addLevel',[CustomerClubController::class,'addToLevelClub'])->name('addToLevelClub');
+////        Route::resource('favoriteList', FavoriteListController::class)->except('edit','update');
+////        Route::resource('upload/img',ImageController::class);
+////        Route::resource('product/Rating/log' ,ProductRatingLogController::class);
+////        Route::post('createDiscount/',[CartController::class,'createDiscount'])->name('createDiscount');
+////        Route::resource('/cart',CartController::class,);
+//    });
+////    Route::resource('centerShop',CenterShopController::class)->except('create','store','edit','update','destroy');
+////    Route::resource('category',CategoryController::class)->except('store','edit','update','destroy','create');
+////    Route::resource('product',ProductController::class)->except('create','edit','store','update','destroy');
+////    Route::resource('/aboutRetilgram',AboutRetilgramController::class,)->except('show','edit','update','destroy','index');
+////    Route::resource('/order',OrderController::class,);
+////    Route::post('search',[SearchController::class,'store'])->name('search');
+////    Route::middleware('influencer')->get('NumberCodeUse',[AdminInfluencer::class,'NumberCodeUse'])->name('NumberCodeUse');
+////    Route::middleware('shop')->resource('productShop',ProductShopController::class);
+//});
+//Route::prefix('admin/')->name('admin.')->group(function (){
+//    Route::middleware('admin')->group(function (){
+////        Route::resource('category',AdminCategory::class);
+////        Route::post('center/status/{id}',[AdminCenterShop::class,'status'])->name('centerStatus');
+////        Route::resource('user/add',UserController::class);
+////        Route::resource('data',DataController::class);
+////        Route::resource('customer/club',CustomerClubController::class);
+////        Route::resource('profile',AdminProfile::class);
+////        Route::resource('discount',DiscountController::class);
+////        Route::post('discount/status/{id}',[DiscountController::class,'status'])->name('shopStatus');
+////        Route::resource('influencer' ,InfluencerController::class);
+////        Route::resource('permissionLog',PermissionLogController::class);
+//    });
+////    Route::middleware('admin_center')->prefix('center')->name('center.')->group(function (){
+////        Route::resource('shop',ShopController::class);
+////        Route::post('shop/status/{id}',[ShopController::class,'status'])->name('shopStatus');
+////        Route::post('product/status/{id}',[AdminProduct::class,'status'])->name('shopStatus');
+////        Route::resource('size', AdminSize::class);
+////        Route::resource('size/log', SizeLogController::class);
+////        Route::resource('productsSold',AdminProductSold::class);
+//
+////        Route::resource('color', AdminColor::class);
+////        Route::resource('property',PropertyController::class);
+////        Route::resource('product',AdminProduct::class);
+////        Route::resource('image',AdminImage::class);
+////        Route::resource('productRating', AdminProductRating::class);
+////        Route::post('status/product/sold/{id}',[AdminProductSold::class,'status'])->name('status.product.sold');
+////        Route::resource('product/rating', AdminProductRating::class);
+//
+////    });
+////    Route::middleware('manager')->prefix('manager')->group(function (){
+////        Route::resource('comment',AdminComment::class);
+////        Route::post('comment/status/{id}',[AdminComment::class,'status'])->name('commentStatus');
+////        Route::resource('question',AnswerController::class);
+////        Route::post('answer/question/{id}',[AnswerController::class,'answer'])->name('answer');
+////    });
+////    Route::middleware('auth')->group(function (){
+////        Route::post('add/user',[UserController::class,'store1'])->name('user.add');
+////        Route::resource('question',QuestionController::class);
+////        Route::post('code_validity/{code}',[DiscountController::class,'code_validity'])->name('code_validity');
+////        Route::resource('centerShop',AdminCenterShop::class);
+////        Route::resource('payment',PaymentController::class);
+////        Route::resource('payment/log',PaymentLogController::class);
+////        Route::resource('permission',PermissionController::class);
+////    });
+//    Route::middleware('stylist')->resource('productStylist',StylistProductController::class);
+//});

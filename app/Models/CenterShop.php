@@ -17,7 +17,7 @@ class CenterShop extends Model
 
     public function shops()
     {
-        return $this->hasMany(Shop::class);
+        return $this->hasMany(Shop::class,'centerShop_id','id');
     }
 
     public function productsSold()

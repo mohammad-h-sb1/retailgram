@@ -40,5 +40,10 @@ class Discount extends Model
         return $this->hasMany(Cart::class);
     }
 
+    public function payment()
+    {
+        return $this->belongsTo(Payment::class,);
+    }
+
 
 }

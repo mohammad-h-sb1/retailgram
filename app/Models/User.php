@@ -27,6 +27,8 @@ class User extends Authenticatable
         'rating',
         'api_token',
         'customer_id',
+        'city_id',
+        'province_id'
     ];
 
     /**
@@ -214,8 +216,23 @@ class User extends Authenticatable
         return $this->permissions->contains('code',$permission);
     }
 
+    public function commentLike()
+    {
+        return $this->hasMany(CommentLike::class);
+    }
+
+    public function city()
+    {
+        return $this->belongsTo(City::class,'city_id','id');
+    }
+
+    public function provinces()
+    {
+        return $this->belongsTo(Province::class,'province_id','id');
+    }
 //    public function permissionsLogs()
 //    {
 //        return $this->hasMany(PermissionLog::class,'user_id','id');
 //    }
+
 }
