@@ -14,7 +14,11 @@ class CityController extends Controller
      */
     public function index()
     {
-        //
+        $city=City::all();
+        return response()->json([
+            'status'=>'ok',
+            'data'=>$city
+        ]);
     }
 
     /**
@@ -90,5 +94,6 @@ class CityController extends Controller
                 'status' => !$status->status,
             ]
         );
+
     }
 }
