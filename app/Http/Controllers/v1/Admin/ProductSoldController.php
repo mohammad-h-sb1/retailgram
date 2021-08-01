@@ -6,7 +6,9 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\ProductSold\ProductSoldStore;
 use App\Http\Resources\Admin\ProductSoldCollection;
 use App\Models\CenterShop;
+use App\Models\City;
 use App\Models\ProductSold;
+use App\Models\Province;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
@@ -242,7 +244,47 @@ class ProductSoldController extends Controller
 
     public function byCity($city)
     {
+        $city=City::query()->where('name',$city)->first();
+        $products=$city->productSolds;
+        $count=count($products);
 
+        $active=$products->where('status',1);
+        $countActive=count($active);
+
+        $inactive=$products->where('status',0);
+        $countInactive=count($inactive);
+
+        return response()->json([
+            'status'=>'ok',
+            'data'=>[
+                'count'=>$count,
+                'countActive'=>$countActive,
+                'countInactive'=>$countInactive
+            ]
+        ]);
+    }
+
+    public function province($province)
+    {
+        $province=Province::query()->where('name',$province)->first();
+        $product=$province->productSolds;
+        $count=count($product);
+
+
+        $active=$product->where('status','1');
+        $countActive=count($active);
+
+        $inactive=$product->where('status',0);
+        $countInactive=count($inactive);
+
+        return response()->json([
+            'status'=>'ok',
+            'data'=>[
+                'count'=>$count,
+                'Active'=>$countActive,
+                'Inactive'=>$countInactive
+            ]
+        ]);
     }
 
 }

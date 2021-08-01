@@ -5,6 +5,7 @@ namespace App\Http\Controllers\v1\Admin;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\Admin\CommentCollection;
 use App\Models\Comment;
+use App\Models\Manager;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -114,19 +115,24 @@ class CommentController extends Controller
             $comment->delete();
 
     }
-    public function status($id,Request $request)
+    public function status($id)
     {
-        auth()->loginUsingId(1);
-        if (auth()->user()->type === 'admin'| auth()->user()->type === 'manager') {
-            $status = Comment::query()->findOrFail($id);
+        if (auth()->user()->type === 'manager') {
+            $user=auth()->user();
+            $manger=Manager::query()->whereIn('user_id',$user)->pluck('id')->first();
+            $status=Comment::query()->where('id',$id)->first();
+            $data=[
+                'status'=>!$status->status,
+                'manager_id'=>$manger
+            ];
+            $status->update($data);
+        }
+        elseif (auth()->user()->type === 'admin'){
+            $status=Comment::query()->where('id',$id)->first();
             $status->update([
                     'status' => !$status->status,
                 ]
             );
-            return response()->json([
-                'status'=>'ok',
-                'data'=>new CommentCollection($status)
-            ]);
         }
         else{
             return response()->json([
@@ -135,5 +141,4 @@ class CommentController extends Controller
             ],403);
         }
     }
-
 }

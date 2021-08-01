@@ -7,6 +7,7 @@ use App\Http\Resources\Admin\UserCollection;
 use App\Http\Resources\Front\StyListCollection;
 use App\Models\CustomerClub;
 use App\Models\Influencer;
+use App\Models\Manager;
 use App\Models\Stylist;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -41,6 +42,7 @@ class UserController extends Controller
             'password' => Hash::make('password'),
             'api_token'=>Str::random(100),
         ];
+
         $user = User::create($data);
         $user->permissions()->sync($request->input('permissionLog'));
         if ($request->type === 'stylist'){
@@ -66,6 +68,19 @@ class UserController extends Controller
                 'data'=>$influ
             ]);
         }
+
+        if ($request->type === 'manager'){
+            $data=[
+                'user_id'=>$user->id,
+                'name'=>$request->name,
+            ];
+            $manager=Manager::create($data);
+            return response()->json([
+                'status'=>'ok',
+                'data'=>$manager
+            ]);
+        }
+
         return response()->json([
             'status'=>'ok',
             'data'=>new UserCollection($user)

@@ -2,12 +2,12 @@
 
 namespace App\Http\Resources\Front;
 
+use App\Http\Controllers\v1\Admin\UserController;
 use App\Http\Resources\Admin\UserCollection;
-use App\Models\ProductSold;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Http\Resources\Json\ResourceCollection;
 
-class ProductSoldCollection extends JsonResource
+class ManagerCollection extends JsonResource
 {
     /**
      * Transform the resource collection into an array.
@@ -19,13 +19,7 @@ class ProductSoldCollection extends JsonResource
     {
         return[
             'user'=>new UserCollection($this->user),
-            'center_shop'=>new CenterShopCollection($this->centerShop),
-            'product_id'=>new \App\Http\Resources\Front\Product\ProductCollection($this->product),
-            'count'=>$this->count,
-            'customer_address'=>$this->customer_address,
-            'created_at'=>(string)$this->created_at,
-            'city'=>$this->city,
-            'province'=>$this->province
+            'name'=>$this->name
         ];
     }
 }

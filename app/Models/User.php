@@ -230,6 +230,11 @@ class User extends Authenticatable
     {
         return $this->belongsTo(Province::class,'province_id','id');
     }
+
+    public function managers()
+    {
+        return $this->hasMany(Manager::class);
+    }
 //    public function permissionsLogs()
 //    {
 //        return $this->hasMany(PermissionLog::class,'user_id','id');

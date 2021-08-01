@@ -44,13 +44,18 @@ class ProductSoldController extends Controller
     {
         $data=[
             'user_id'=>auth()->user()->id,
-            'center_shop'=>$request->center_shop,
+            'center_shop_id'=>$request->center_shop_id,
             'product_id'=>$request->product_id,
             'count'=>$request->count,
-            'customer_address'=>$request->customer_address,
+//            'customer_address'=>$request->customer_address,
+            'province_id'=>$request->province_id,
+            'city_id'=>$request->city_id
         ];
         $product=ProductSold::create($data);
-        return response()->json($product);
+        return response()->json([
+            'status'=>'ok',
+            'data'=>new ProductSoldCollection($product)
+        ]);
     }
 
     /**
@@ -61,7 +66,6 @@ class ProductSoldController extends Controller
      */
     public function show(ProductSold $productsSold)
     {
-        auth()->loginUsingId(1);
         if(auth()->user()->id === $productsSold->user_id){
             return response()->json([
                 'status',

@@ -469,12 +469,12 @@ class PermissionsSeeder extends Seeder
                 'type'=>'admin'
             ],
             [
-                'name'=>'دیدن shop',
+                'name'=>'ویرایش shop',
                 'code'=>'edit_product_sold_admin',
                 'type'=>'admin'
             ],
             [
-                'name'=>'دیدن shop',
+                'name'=>'اپدیت shop',
                 'code'=>'update_product_sold_admin',
                 'type'=>'admin'
             ],
@@ -498,6 +498,38 @@ class PermissionsSeeder extends Seeder
             [
                 'name'=>'status شهر',
                 'code'=>'status_city_admin',
+                'type'=>'admin'
+            ],
+
+            //admin manager
+            [
+                'name'=>'دیدنه همه manger',
+                'code'=>'index_manager_admin',
+                'type'=>'admin'
+            ],
+            [
+                'name'=>'دیدن manager',
+                'code'=>'show_manager_center',
+                'type'=>'admin'
+            ],
+            [
+                'name'=>'ویرایش manager',
+                'code'=>'edit_manager_admin',
+                'type'=>'admin'
+            ],
+            [
+                'name'=>'اپدیت manager',
+                'code'=>'update_manager_admin',
+                'type'=>'admin'
+            ],
+            [
+                'name'=>'حذف manager',
+                'code'=>'delete_manager_admin',
+                'type'=>'admin'
+            ],
+            [
+                'name'=>'active manager',
+                'code'=>'active_manager_admin',
                 'type'=>'admin'
             ],
         ];

@@ -31,4 +31,9 @@ class Comment extends Model
     {
         return $this->hasMany(CommentLike::class);
     }
+
+    public function manager()
+    {
+        return $this->belongsTo(Manager::class,'manager_id','id');
+    }
 }

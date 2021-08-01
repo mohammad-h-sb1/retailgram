@@ -25,5 +25,12 @@ class ProductSold extends Model
         return $this->belongsTo(Product::class);
     }
 
-
+    public function city()
+    {
+        return $this->belongsTo(City::class,'city_id','id');
+    }
+    public function province()
+    {
+        return $this->belongsTo(Province::class,'province_id','id');
+    }
 }

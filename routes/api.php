@@ -6,6 +6,7 @@ use App\Http\Controllers\v1\Admin\DataController;
 use App\Http\Controllers\v1\Admin\DiscountController;
 use App\Http\Controllers\v1\Admin\ImageController;
 use App\Http\Controllers\v1\Admin\InfluencerController;
+use App\Http\Controllers\v1\Admin\ManagerController;
 use App\Http\Controllers\v1\Admin\PaymentController;
 use App\Http\Controllers\v1\Admin\PaymentLogController;
 use App\Http\Controllers\v1\Admin\PermissionController;
@@ -207,7 +208,6 @@ Route::middleware('auth:api')->group(function () {
             Route::delete('/delete/{product}',[AdminProduct::class,'destroy'])->middleware('checkGate:delete_product_admin');
             Route::post('status/{id}',[AdminProduct::class,'status'])->middleware('checkGate:status_product_admin');
 
-
         });
 
         //admin shop
@@ -236,12 +236,25 @@ Route::middleware('auth:api')->group(function () {
             Route::get('sales/report/by/gender',[AdminProductSold::class,'SalesReportByGender'])->middleware('checkGate:status_product_sold_admin');
             //براساس شهر
             Route::get('by/city/{city}',[AdminProductSold::class,'byCity'])->middleware('checkGate:status_product_sold_admin');
+            //بر اساس استان
+            Route::get('by/province/{province}',[AdminProductSold::class,'province'])->middleware('checkGate:status_product_sold_admin');
         });
 
         //admin city
         Route::prefix('admin/city/')->name('admin/city')->group(function (){
             Route::get('/',[CityController::class,'index'])->middleware('checkGate:index_city_admin');
             Route::post('/status/{id}',[CityController::class,'status'])->middleware('checkGate:status_city_admin');
+        });
+
+        //admin manger
+        Route::prefix('admin/manager')->name('manager')->group(function (){
+            Route::get('/',[ManagerController::class,'index'])->middleware('checkGate:index_manager_admin');
+            Route::get('/show/{manager}',[ManagerController::class,'show'])->middleware('checkGate:show_manager_center');
+            Route::get('/edit/{manager}',[ManagerController::class,'edit'])->middleware('checkGate:edit_manager_admin');
+            Route::put('/update/{manager}',[ManagerController::class,'update'])->middleware('checkGate:update_manager_admin');
+            Route::delete('delete/{manger}',[ManagerController::class,'destroy'])->middleware('checkGate:delete_manager_admin');
+            //فعالیت manager در status کامنت ها
+            Route::get('activity/comment/{id}',[ManagerController::class,'activityComment'])->middleware('checkGate:active_manager_admin');
         });
      });
 

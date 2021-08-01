@@ -3,8 +3,12 @@
 namespace App\Http\Controllers\v1\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\Admin\CommentCollection;
+use App\Http\Resources\Front\ManagerCollection;
+use App\Models\Comment;
 use App\Models\Manager;
 use Illuminate\Http\Request;
+use Illuminate\Http\Resources\Json\JsonResource;
 
 class ManagerController extends Controller
 {
@@ -15,7 +19,11 @@ class ManagerController extends Controller
      */
     public function index()
     {
-        //
+        $manager=Manager::all();
+        return response()->json([
+            'status'=>'ok',
+            'data'=>ManagerCollection::collection($manager)
+        ]);
     }
 
     /**
@@ -36,7 +44,7 @@ class ManagerController extends Controller
      */
     public function store(Request $request)
     {
-        //
+
     }
 
     /**
@@ -47,7 +55,10 @@ class ManagerController extends Controller
      */
     public function show(Manager $manager)
     {
-        //
+        return response()->json([
+            'status'=>'ok',
+            'manager'=>new ManagerCollection($manager)
+        ]);
     }
 
     /**
@@ -58,7 +69,10 @@ class ManagerController extends Controller
      */
     public function edit(Manager $manager)
     {
-        //
+        return response()->json([
+            'status'=>'ok',
+            'manager'=>new ManagerCollection($manager)
+        ]);
     }
 
     /**
@@ -70,7 +84,10 @@ class ManagerController extends Controller
      */
     public function update(Request $request, Manager $manager)
     {
-        //
+        $data=[
+            'name'=>$request->name,
+        ];
+        $manager->update($data);
     }
 
     /**
@@ -81,6 +98,22 @@ class ManagerController extends Controller
      */
     public function destroy(Manager $manager)
     {
-        //
+        $manager->delete();
+    }
+
+    public function activityComment($id)
+    {
+        $manager=Manager::query()->where('id',$id)->pluck('id')->first();
+        $comments=Comment::query()->where('manager_id',$manager)->get();
+        $count=count($comments);
+
+        return response()->json([
+            'status'=>'ok',
+            'data'=>[
+                'comment'=>CommentCollection::collection($comments),
+                'countActive'=>$count
+            ]
+        ]);
+
     }
 }
