@@ -19,4 +19,9 @@ class Manager extends Model
     {
         return $this->hasMany(Comment::class,'id','manager_id');
     }
+
+    public function data()
+    {
+        return $this->hasMany(Data::class);
+    }
 }

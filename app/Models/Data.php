@@ -13,4 +13,9 @@ class Data extends Model
     {
         return $this->belongsTo(User::class);
     }
+
+    public function manager()
+    {
+        return $this->belongsTo(Manager::class);
+    }
 }

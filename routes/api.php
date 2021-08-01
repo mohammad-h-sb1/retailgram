@@ -382,7 +382,7 @@ Route::middleware('auth:api')->group(function () {
         });
 
         //manager data
-        Route::prefix('data')->name('date')->group(function (){
+        Route::prefix('manager/data')->name('date')->group(function (){
             Route::get('/',[DataController::class,'index'])->middleware('checkGate:index_data_manager');
             Route::post('/store',[DataController::class,'store'])->middleware('checkGate:add_data_manager');
             Route::get('/show/{data}',[DataController::class,'show'])->middleware('checkGate:show_data_manager');

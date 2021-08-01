@@ -6,7 +6,9 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Data\DataStore;
 use App\Http\Resources\Admin\DataCollection;
 use App\Models\Data;
+use App\Models\Manager;
 use Illuminate\Http\Request;
+use Illuminate\Http\Resources\Json\JsonResource;
 
 class DataController extends Controller
 {
@@ -43,10 +45,27 @@ class DataController extends Controller
      */
     public function store(DataStore $request)
     {
-        auth()->loginUsingId(1);
         if (auth()->user()->type === 'admin') {
             $information = [
                 'user_id' => auth()->user()->id,
+                'telegram' => $request->telegram,
+                'instagram' => $request->instagram,
+                'whatsapp' => $request->whatsapp,
+                'phone' => $request->phone,
+                'mobile' => $request->mobile,
+                'address' => $request->address,
+            ];
+            $data = Data::create($information);
+            return response()->json([
+                'status'=>'ok',
+                'data'=>new DataCollection($data),
+            ]);
+        }
+        elseif (auth()->user()->type === 'manager'){
+            $manager=Manager::query()->where('user_id',auth()->user()->id)->pluck('id')->first();
+            $information = [
+                'user_id' => auth()->user()->id,
+                'manager_id' => $manager,
                 'telegram' => $request->telegram,
                 'instagram' => $request->instagram,
                 'whatsapp' => $request->whatsapp,
