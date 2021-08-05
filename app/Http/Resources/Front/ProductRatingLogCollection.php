@@ -17,10 +17,8 @@ class ProductRatingLogCollection extends JsonResource
      */
     public function toArray($request)
     {
-
         return [
-            'user'=>UserCollection::collection($this->users),
-            'product_rating_id'=>ProductRatingCollection::collection($this->productRatings),
+            'product_rating_id'=>new ProductRatingCollection($this->productRating),
             'rating'=>$this->rating
         ];
     }

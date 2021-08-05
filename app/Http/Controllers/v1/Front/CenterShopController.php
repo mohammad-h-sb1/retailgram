@@ -23,7 +23,6 @@ class CenterShopController extends Controller
     {
         $centerShop=CenterShop::query()->where('status',1)->get();
         $count=count($centerShop);
-
         return response()->json([
             'status'=>'ok',
             'data'=>[

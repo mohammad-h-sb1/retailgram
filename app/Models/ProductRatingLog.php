@@ -17,6 +17,6 @@ class ProductRatingLog extends Model
 
     public function productRating()
     {
-        return $this->belongsTo(ProductRating::class,'id','product_rating_id');
+        return $this->belongsTo(ProductRating::class,'product_rating_id','id');
     }
 }

@@ -19,9 +19,13 @@ class OrderController extends Controller
     public function index()
     {
         $order=Order::query()->where('user_id',auth()->user()->id)->get();
+        $count=count($order);
         return response()->json([
             'status'=>'ok',
-            'data'=>OrderCollection::collection($order)
+            'data'=>[
+               'order'=>OrderCollection::collection($order),
+                'count'=>$count
+            ]
         ]);
     }
 

@@ -493,7 +493,7 @@ Route::middleware('auth:api')->group(function () {
         });
 
         //user favoriteList
-        Route::prefix('favoriteList')->name('favoriteList')->group(function (){
+        Route::prefix('favorite/list')->name('favoriteList')->group(function (){
             Route::get('/',[FavoriteListController::class,'index'])->middleware('checkGate:favoriteList_index');
             Route::post('/store',[FavoriteListController::class,'store'])->middleware('checkGate:favoriteList_store');
             Route::get('/show/{favoriteList}',[FavoriteListController::class,'show'])->middleware('checkGate:favoriteList_show');

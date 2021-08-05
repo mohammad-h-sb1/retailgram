@@ -103,7 +103,7 @@ class Product extends Model
 
     public function FavoriteList()
     {
-        return $this->belongsTo(FavoriteList::class,'id','product_id');
+        return $this->belongsTo(FavoriteList::class,);
     }
 
     public function sizes()

@@ -17,14 +17,14 @@ class FavoriteListController extends Controller
      */
     public function index()
     {
-        $favorite=FavoriteList::query()->where('user_id',auth()->user()->id)->pluck('product_id');
-        $category=$favorite->pluck('category_id');
-        dd($category);
-        $product=Product::query()->whereIn('id',$favorite)->get();
-        dd($product);
+        $favorite=FavoriteList::query()->where('user_id',auth()->user()->id)->get();
+        $count=count($favorite);
         return response()->json([
             'status'=>'ok',
-            'data'=>FavoriteListCollection::collection($favorite)
+            'data'=>[
+                'favorite'=>FavoriteListCollection::collection($favorite),
+                'count'=>$count
+            ]
         ]);
     }
 
@@ -46,7 +46,6 @@ class FavoriteListController extends Controller
      */
     public function store(Request $request)
     {
-        auth()->loginUsingId(1);
         $data=[
             'user_id'=>auth()->user()->id,
             'category_id'=>$request->category_id,
@@ -67,7 +66,6 @@ class FavoriteListController extends Controller
      */
     public function show(favoriteList $favoriteList)
     {
-        auth()->loginUsingId(1);
         if ($favoriteList->user_id === auth()->user()->id){
             return response()->json([
                 'status'=>'ok',
@@ -114,8 +112,6 @@ class FavoriteListController extends Controller
      */
     public function destroy(favoriteList $favoriteList)
     {
-        auth()->loginUsingId(1);
-        auth()->user()->id;
         if ($favoriteList->user_id === auth()->user()->id){
             $favoriteList->delete();
         }

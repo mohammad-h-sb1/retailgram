@@ -20,9 +20,13 @@ class Product1Controller extends Controller
     public function index()
     {
         $product=Product::query()->where('status',1)->get();
+        $count=count($product);
         return response()->json([
             'status'=>'ok',
-            'data'=>ProductCollection::collection($product)
+            'data'=>[
+                'product'=>ProductCollection::collection($product),
+                'count'=>$count
+            ]
         ]);
     }
 
