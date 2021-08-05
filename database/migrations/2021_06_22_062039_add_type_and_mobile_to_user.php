@@ -20,8 +20,8 @@ class AddTypeAndMobileToUser extends Migration
         Schema::table('users', function (Blueprint $table) {
             $table->unsignedBigInteger('customer_id')->after('id')->default(1);
             $table->string('mobile')->unique()->after('name');
-            $table->enum('type',UserType::TYPES)->default(UserType::TYPE_USER)->after('email');
-            $table->enum('gender',GenderType::GENDER)->default(GenderType::GENDER_WOMAN)->after('type');
+            $table->enum('type',User::TYPES)->default(User::TYPE_USER)->after('email');
+            $table->enum('gender',User::GENDER)->default(User::GENDER_WOMAN)->after('type');
             $table->string('rating')->default(0)->after('gender');
             $table->string('api_token')->unique()->after('rating')->nullable();
             $table->string('state')->after('api_token')->nullable();

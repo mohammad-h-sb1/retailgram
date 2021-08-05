@@ -39,16 +39,16 @@ class CreateProductSoldsTable extends Migration
                 ->on('products')
                 ->onUpdate('CASCADE')
                 ->onDelete('CASCADE');
-            $table->foreign('province_id')
-                ->references('id')
-                ->on('provinces')
-                ->onUpdate('CASCADE')
-                ->onDelete('CASCADE');
-            $table->foreign('city_id')
-                ->references('id')
-                ->on('cities')
-                ->onUpdate('CASCADE')
-                ->onDelete('CASCADE');
+//            $table->foreign('province_id')
+//                ->references('id')
+//                ->on('provinces')
+//                ->onUpdate('CASCADE')
+//                ->onDelete('CASCADE');
+//            $table->foreign('city_id')
+//                ->references('id')
+//                ->on('cities')
+//                ->onUpdate('CASCADE')
+//                ->onDelete('CASCADE');
         });
     }
 

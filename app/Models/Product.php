@@ -11,6 +11,9 @@ class Product extends Model
     use Sluggable;
     use HasFactory;
     protected $guarded=[];
+    const GENDER_MAN='man';
+    const GENDER_WOMAN='woman';
+    const GENDER = [self::GENDER_MAN,self::GENDER_WOMAN];
 
     public function customer()
     {

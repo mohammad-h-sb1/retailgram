@@ -28,20 +28,20 @@ class AuthServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        $this->registerPolicies();
-
-        if (Cache::has('permissions') && Functions::isProductionMode()) {
-            $permissions = Cache::get('permissions');
-        } else {
-            $permissions = Permission::all();
-
-            Cache::put('permissions', $permissions, Carbon::now()->endOfDay());
-        }
-
-        foreach ($permissions as $permission) {
-            Gate::define($permission->code, function () use ($permission) {
-                return Auth::user()->hasPermission($permission->code);
-            });
-        }
+//        $this->registerPolicies();
+//
+//        if (Cache::has('permissions') && Functions::isProductionMode()) {
+//            $permissions = Cache::get('permissions');
+//        } else {
+//            $permissions = Permission::all();
+//
+//            Cache::put('permissions', $permissions, Carbon::now()->endOfDay());
+//        }
+//
+//        foreach ($permissions as $permission) {
+//            Gate::define($permission->code, function () use ($permission) {
+//                return Auth::user()->hasPermission($permission->code);
+//            });
+//        }
     }
 }

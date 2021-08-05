@@ -22,7 +22,7 @@ class CreateProductsTable extends Migration
             $table->unsignedBigInteger('category_id');
             $table->string('name');
             $table->string('slug')->unique();
-            $table->enum('gender',ProductGenderType::GENDER)->default(ProductGenderType::GENDER_WOMAN);
+            $table->enum('gender',Product::GENDER)->default(Product::GENDER_WOMAN);
             $table->text('description');
             $table->string('price_product');
             $table->string('discount_product')->nullable();

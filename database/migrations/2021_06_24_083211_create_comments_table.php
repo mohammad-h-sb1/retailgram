@@ -23,7 +23,7 @@ class CreateCommentsTable extends Migration
             $table->string('weakness')->nullable();
             $table->boolean('status')->default(false);
             $table->timestamps();
-            $table->foreign('parent_id')->references('id')->onDelete('SET NULL');
+            $table->foreign('parent_id')->references('id')->on('comments')->onDelete('SET NULL');
 
             $table->foreign('user_id')
                 ->references('id')

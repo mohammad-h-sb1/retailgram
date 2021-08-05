@@ -20,7 +20,7 @@ class CreateCategoriesTable extends Migration
             $table->string('name');
             $table->text('description');
             $table->timestamps();
-            $table->foreign('parent_id')->references('id')->onDelete('SET NULL');
+            $table->foreign('parent_id')->references('id')->on('categories')->onDelete('SET NULL');
             $table->foreign('user_id')
                 ->references('id')
                 ->on('users')

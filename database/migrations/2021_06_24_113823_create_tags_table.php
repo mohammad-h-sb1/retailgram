@@ -17,7 +17,7 @@ class CreateTagsTable extends Migration
             $table->id();
             $table->unsignedBigInteger('user_id');
             $table->unsignedBigInteger('product_id');
-            $table->unsignedBigInteger('Size_id');
+            $table->unsignedBigInteger('size_id');
             $table->string('attributes');
             $table->string('size');
 
@@ -31,11 +31,11 @@ class CreateTagsTable extends Migration
                 ->on('products')
                 ->onUpdate('CASCADE')
                 ->onDelete('CASCADE');
-            $table->foreign('Size_id')
-                ->references('id')
-                ->on('sizes')
-                ->onUpdate('CASCADE')
-                ->onDelete('CASCADE');
+//            $table->foreign('size_id')
+//                ->references('id')
+//                ->on('sizes')
+//                ->onUpdate('CASCADE')
+//                ->onDelete('CASCADE');
         });
     }
 

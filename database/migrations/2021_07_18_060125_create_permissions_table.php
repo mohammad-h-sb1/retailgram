@@ -1,6 +1,7 @@
 <?php
 
 use App\Enums\UserType;
+use App\Models\User;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -18,7 +19,7 @@ class CreatePermissionsTable extends Migration
             $table->id();
             $table->string('name');
             $table->string('code');
-            $table->enum('type',UserType::TYPES)->default(UserType::TYPE_USER);
+            $table->enum('type',User::TYPES)->default(User::TYPE_USER);
             $table->timestamps();
         });
     }

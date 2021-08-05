@@ -22,8 +22,8 @@ class CreateDiscountsTable extends Migration
             $table->string('code');
             $table->string('discount_percendiscount_end_datet')->nullable();
             $table->string('amount_of_discount')->nullable();
-            $table->timestamp('discount_start_date');
-            $table->timestamp('discount_end_date');
+//            $table->timestamp('discount_start_date');
+//            $table->timestamp('discount_end_date');
             $table->boolean('status')->default(false);
             $table->timestamps();
 
@@ -42,11 +42,11 @@ class CreateDiscountsTable extends Migration
                 ->on('products')
                 ->onUpdate('CASCADE')
                 ->onDelete('CASCADE');
-            $table->foreign('influencers_id')
-                ->references('id')
-                ->on('influencers')
-                ->onUpdate('CASCADE')
-                ->onDelete('CASCADE');
+//            $table->foreign('influencers_id')
+//                ->references('id')
+//                ->on('influencers')
+//                ->onUpdate('CASCADE')
+//                ->onDelete('CASCADE');
         });
     }
 

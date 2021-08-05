@@ -1,6 +1,7 @@
 <?php
 
 use App\Enums\CustomerClubLevel;
+use App\Models\Customer;
 use App\Models\CustomerClub;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
@@ -18,7 +19,7 @@ class CreateCustomerClubsTable extends Migration
         Schema::create('customer_clubs', function (Blueprint $table) {
             $table->id();
             $table->string('name')->nullable();
-            $table->enum('level',CustomerClubLevel::LEVEL)->default(CustomerClubLevel::NORMAL_LEVEL);
+            $table->enum('level',CustomerClub::LEVEL)->default(CustomerClub::NORMAL_LEVEL);
             $table->timestamps();
         });
     }
