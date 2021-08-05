@@ -27,22 +27,39 @@ class Product1Controller extends Controller
         if (auth()->user()->type === 'admin') {
             $product = Product::all();
             $count=count($product);
+            $productActive=$product->where('status',1);
+            $countActive=count($productActive);
+
+            $productInactive=$product->where('status',0);
+            $countInactive=count($productInactive);
+
             return response()->json([
                 'status'=>'ok',
                 'data'=>[
                     'product'=>ProductCollection::collection($product),
-                    'count'=>$count
+                    'count'=>$count,
+                    'countActive'=>$countActive,
+                    'countInactive'=>$countInactive
                 ]
             ]);
         }
         elseif (auth()->user()->type === 'admin_center'){
             $product=Product::query()->where('user_id',auth()->user()->id)->get();
             $count=count($product);
+
+            $productActive=$product->where('status',1);
+            $countActive=count($productActive);
+
+            $productInactive=$product->where('status',0);
+            $countInactive=count($productInactive);
+
             return response()->json([
                 'status'=>'ok',
                 'data'=>[
                     'product'=>ProductCollection::collection($product),
-                    'count'=>$count
+                    'count'=>$count,
+                    'countActive'=>$countActive,
+                    'countInactive'=>$countInactive
                 ]
             ]);
         }

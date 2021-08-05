@@ -109,18 +109,10 @@ class DataController extends Controller
      */
     public function edit(Data $data)
     {
-        if (auth()->user()->type === 'admin') {
-            return response()->json([
-                'status' => 'ok',
-                'data' => new DataCollection($data)
-            ]);
-        }
-        else{
-            return response()->json([
-                'status'=>'Error',
-                'massage'=>'شما دسترسی ندارید'
-            ]);
-        }
+        return response()->json([
+            'status'=>'ok',
+            'data'=>new DataCollection($data),
+        ]);
 
     }
 
@@ -133,8 +125,7 @@ class DataController extends Controller
      */
     public function update(DataStore $request, Data $data)
     {
-        auth()->loginUsingId(1);
-        if (auth()->user()->type === 'admin') {
+        if (auth()->user()->type === 'admin'|auth()->user()->type === 'manager') {
             $information = [
                 'user_id' => auth()->user()->id,
                 'telegram' => $request->telegram,
@@ -193,6 +184,17 @@ class DataController extends Controller
                 'massage'=>'شما دست رسی ندارید'
             ],403);
         }
+    }
+
+    public function active()
+    {
+        $manager=Manager::query()->where('user_id',auth()->user()->id)->first();
+        $data=$manager->data->where('manager_id',$manager->id);
+        $count=count($data);
+        return response()->json([
+            'status'=>'ok',
+            'data'=>$count
+        ]);
     }
 
 

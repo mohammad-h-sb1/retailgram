@@ -16,11 +16,16 @@ class ProductSoldController extends Controller
      */
     public function index()
     {
-        auth()->loginUsingId(1);
+
         $productSold=ProductSold::query()->where('user_id',auth()->user()->id)->get();
+        $active=$productSold->where('status',1);
+        $count=count($active);
         return response()->json([
             'status',
-            'data'=>ProductSoldCollection::collection($productSold),
+            'data'=>[
+                'productSold'=>ProductSoldCollection::collection($productSold),
+                'count'=>$count
+            ]
         ]);
     }
 

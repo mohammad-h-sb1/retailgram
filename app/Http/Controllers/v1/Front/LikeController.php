@@ -101,4 +101,19 @@ class LikeController extends Controller
             ],403);
         }
     }
+
+    public function product()
+    {
+        $like=Like::query()->where('user_id',auth()->user()->id)->pluck('product_id');
+        $countLike=count($like);
+        $product=Product::query()->whereIn('id',$like)->get();
+
+        return response()->json([
+            'status'=>'ok',
+            'data'=>[
+                'product'=>$product,
+                'countLike'=>$countLike
+            ]
+        ]);
+    }
 }

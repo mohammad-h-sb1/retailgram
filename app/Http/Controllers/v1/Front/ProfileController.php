@@ -21,7 +21,6 @@ class ProfileController extends Controller
 
     public function store(Request $request)
     {
-        auth()->loginUsingId(3);
         $data=[
             'user_id'=>auth()->user()->id,
             'description'=>$request->description,
@@ -37,7 +36,6 @@ class ProfileController extends Controller
 
     public function edit(Profile $profile)
     {
-        auth()->loginUsingId(1);
         if (auth()->user()->id === $profile->user_id) {
             return response()->json([
                 'status' => 'ok',
@@ -54,7 +52,6 @@ class ProfileController extends Controller
 
     public function update(Request $request , Profile $profile)
     {
-        auth()->loginUsingId(3);
         if (auth()->user()->id === $profile->user_id) {
             $data = [
                 'description' => $request->description,
@@ -72,7 +69,6 @@ class ProfileController extends Controller
 
     public function destroy(Profile $profile)
     {
-        auth()->loginUsingId(2);
         if (auth()->user()->type === 'admin' | auth()->user()->id === $profile->user_id) {
             $profile->delete();
         }

@@ -5,6 +5,7 @@ namespace App\Http\Controllers\v1\Front;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\Front\FavoriteListCollection;
 use App\Models\favoriteList;
+use App\Models\Product;
 use Illuminate\Http\Request;
 
 class FavoriteListController extends Controller
@@ -16,8 +17,11 @@ class FavoriteListController extends Controller
      */
     public function index()
     {
-        auth()->loginUsingId(1);
-        $favorite=FavoriteList::query()->where('user_id',auth()->user()->id)->get();
+        $favorite=FavoriteList::query()->where('user_id',auth()->user()->id)->pluck('product_id');
+        $category=$favorite->pluck('category_id');
+        dd($category);
+        $product=Product::query()->whereIn('id',$favorite)->get();
+        dd($product);
         return response()->json([
             'status'=>'ok',
             'data'=>FavoriteListCollection::collection($favorite)

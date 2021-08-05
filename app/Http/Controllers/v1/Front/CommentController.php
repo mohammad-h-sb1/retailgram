@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Comment\CommentStore;
 use App\Http\Resources\Front\CommentCollection;
 use App\Models\Comment;
+use App\Models\CommentLike;
 use App\Models\Like;
 use App\Models\Product;
 use Illuminate\Http\Request;
@@ -149,6 +150,52 @@ class CommentController extends Controller
                 'massage'=>'شما دسترسی ندرید'
             ],403);
         }
+
+    }
+
+    public function count()
+    {
+        $comment=Comment::query()->where('user_id',auth()->user()->id)->get();
+        $count=count($comment);
+
+        $commentActive=$comment->where('status',1);
+        $countActive=count($commentActive);
+
+        $commentInactive=$comment->where('status',0);
+        $countInactive=count($commentInactive);
+
+        return response()->json([
+            'status'=>'ok',
+            'data'=>[
+                'comment'=>$comment,
+                'commentActive'=>$countActive,
+                'commentInactive'=>$countInactive
+            ]
+        ]);
+    }
+
+    public function like()
+    {
+        $comment=Comment::query()->where('user_id',auth()->user()->id)->get();
+        $commentLike=CommentLike::query()->whereIn('comment_id',$comment)->get();
+
+        $like=$commentLike->where('comment_like','comment_like');
+        $countLike=count($like);
+
+        $like=$commentLike->where('comment_like','comment_dislike');
+        $countDislike=count($like);
+
+        return response()->json([
+            'status'=>'ok',
+            'data'=>[
+                'status'=>'ok',
+                'data'=>[
+                    'comment'=>$comment,
+                    'countLike'=>$countLike,
+                    'countDislike'=>$countDislike
+                ]
+            ]
+        ]);
 
     }
 

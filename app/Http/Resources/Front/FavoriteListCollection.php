@@ -16,7 +16,7 @@ class FavoriteListCollection extends JsonResource
     public function toArray($request)
     {
         return [
-            'user'=>UserCollection::collection($this->users),
+//            'user'=>UserCollection::collection($this->users),
             'product'=>\App\Http\Resources\Front\Product\ProductCollection::collection($this->products),
             'categories'=>CategoryCollection::collection($this->categories)
         ];

@@ -107,6 +107,7 @@ Route::middleware('auth:api')->group(function () {
             Route::put('/update/{discount}', [DiscountController::class, 'update'])->middleware('checkGate:update_discount_admin');
             Route::delete('/delete/{discount}', [DiscountController::class, 'destroy'])->middleware('checkGate:delete_discount_admin');
             Route::post('/status/{discount}', [DiscountController::class, 'status'])->middleware('checkGate:status_discount_admin');
+
         });
 
         //admin customer
@@ -255,6 +256,9 @@ Route::middleware('auth:api')->group(function () {
             Route::delete('delete/{manger}',[ManagerController::class,'destroy'])->middleware('checkGate:delete_manager_admin');
             //فعالیت manager در status کامنت ها
             Route::get('activity/comment/{id}',[ManagerController::class,'activityComment'])->middleware('checkGate:active_manager_admin');
+
+            //فعالیت manager در data
+            Route::get('active/data/{id}',[ManagerController::class,'active']);
         });
      });
 
@@ -301,6 +305,7 @@ Route::middleware('auth:api')->group(function () {
             Route::get('/update/{productsSold}',[AdminProductSold::class,'update'])->middleware('checkGate:update_product_sold_center');
             Route::get('/delete/{productsSold}',[AdminProductSold::class,'destroy'])->middleware('checkGate:delete_product_sold_center');
             Route::post('status/{id}',[AdminProductSold::class,'status'])->middleware('checkGate:status_product_sold_center');
+
         });
 
         //admin center tag
@@ -331,7 +336,8 @@ Route::middleware('auth:api')->group(function () {
             Route::get('/edit/{product}',[AdminProduct::class,'edit'])->middleware('checkGate:edit_property_admin_center');
             Route::put('/update/{product}',[AdminProduct::class,'update'])->middleware('checkGate:update_property_admin_center');
             Route::delete('/delete/{product}',[AdminProduct::class,'destroy'])->middleware('checkGate:delete_property_admin_center');
-            Route::delete('/status/{id}',[AdminProduct::class,'status'])->middleware('checkGate:status_property_admin_center');
+            Route::post('/status/{id}',[AdminProduct::class,'status'])->middleware('checkGate:status_property_admin_center');
+
 
         });
 
@@ -346,13 +352,14 @@ Route::middleware('auth:api')->group(function () {
         });
 
        //admin rating
-        Route::prefix('productRating')->name('productRating')->group(function (){
+        Route::prefix('admin/center/product/rating')->name('productRating')->group(function (){
             Route::get('/',[AdminProductRating::class,'index'])->middleware('checkGate:index_product_rating_admin_center');
             Route::post('/store',[AdminProductRating::class,'store'])->middleware('checkGate:store_product_rating_admin_center');
             Route::get('/show/{Rating}',[AdminProductRating::class,'show'])->middleware('checkGate:show_product_rating_admin_center');
             Route::get('/edit/{Rating}',[AdminProductRating::class,'edit'])->middleware('checkGate:edit_product_rating_admin_center');
             Route::put('/update/{Rating}',[AdminProductRating::class,'update'])->middleware('checkGate:update_product_rating_admin_center');
             Route::delete('/delete/{Rating}',[AdminProductRating::class,'destroy'])->middleware('checkGate:delete_product_rating_admin_center');
+
 
         });
 
@@ -368,7 +375,10 @@ Route::middleware('auth:api')->group(function () {
             Route::put('/update/{comment}',[AdminComment::class,'update'])->middleware('checkGate:update_comment_manager');
             Route::delete('/delete/{comment}',[AdminComment::class,'destroy'])->middleware('checkGate:delete_comment_manager');
             Route::post('/status/{comment}',[AdminComment::class,'status'])->middleware('checkGate:status_comment_manager');
-        });
+
+            //فعالیت خوده در کامنت manager
+            Route::get('active',[ManagerController::class,'active'])->middleware('checkGate:index_comment_manager');
+       });
 
         //manger question
         Route::prefix('question')->name('question')->group(function (){
@@ -389,7 +399,10 @@ Route::middleware('auth:api')->group(function () {
             Route::get('/edit/{data}',[DataController::class,'edit'])->middleware('checkGate:edit_data_manager');
             Route::put('/update/{data}',[DataController::class,'update'])->middleware('checkGate:update_data_manager');
             Route::delete('/delete/{data}',[DataController::class,'destroy'])->middleware('checkGate:delete_data_manager');
-            Route::post('/status/{id}',[DataController::class,'status'])->name('shopStatus_manager');
+            Route::post('/status/{id}',[DataController::class,'status'])->middleware('checkGate:shopStatus_manager');
+
+            //فعالیت خوده manager
+            Route::get('active',[DataController::class,'active'])->middleware('checkGate:index_data_manager');
         });
 
         //manager about retilgram
@@ -421,6 +434,12 @@ Route::middleware('auth:api')->group(function () {
             Route::get('edit/{comment}',[CommentController::class,'edit'])->middleware('checkGate:edit_comment_user');
             Route::put('update/{comment}',[CommentController::class,'update'])->middleware('checkGate:update_comment_user');
             Route::delete('delete/{comment}',[CommentController::class,'delete'])->middleware('checkGate:delete_comment_user');
+
+            //تعداد کامنت ها user
+            Route::get('count',[CommentController::class,'count'])->middleware('checkGate:show_comment_user');
+
+            //عداد لایک کامنت
+            Route::get('like',[CommentController::class,'like'])->middleware('checkGate:show_comment_user');
         });
         //like or dislike comment,
         Route::prefix('like/comment')->name('comment')->group(function (){
@@ -450,6 +469,9 @@ Route::middleware('auth:api')->group(function () {
         Route::prefix('like')->name('like')->group(function (){
             Route::post('store',[LikeController::class,'store'])->middleware('checkGate:add_like');
             Route::delete('delete/{like}',[LikeController::class,'destroy'])->middleware('checkGate:delete_like');
+
+            //دیدن پست های که user لایک کرده
+            Route::get('/product',[LikeController::class,'product'])->middleware('checkGate:add_like');
         });
 
         //user Product Sold
@@ -458,6 +480,7 @@ Route::middleware('auth:api')->group(function () {
             Route::post('store',[ProductSoldController::class,'store'])->middleware('checkGate:add_productsSold');
             Route::get('show/{productsSold}',[ProductSoldController::class,'show'])->middleware('checkGate:show_productsSold');
             Route::delete('delete/{productsSold}',[ProductSoldController::class,'destroy'])->middleware('checkGate:delete_productsSold');
+
         });
 
         //user profile
@@ -475,6 +498,7 @@ Route::middleware('auth:api')->group(function () {
             Route::post('/store',[FavoriteListController::class,'store'])->middleware('checkGate:favoriteList_store');
             Route::get('/show/{favoriteList}',[FavoriteListController::class,'show'])->middleware('checkGate:favoriteList_show');
             Route::delete('/delete/{favoriteList}',[FavoriteListController::class,'destroy'])->middleware('checkGate:favoriteList_delete');
+
         });
 
         //user img

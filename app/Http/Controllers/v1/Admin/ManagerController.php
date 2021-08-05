@@ -116,4 +116,23 @@ class ManagerController extends Controller
         ]);
 
     }
+
+    public function active()
+    {
+       $manager=Manager::query()->where('user_id',auth()->user()->id)->pluck('id')->first();
+       $comment=Comment::query()->where('manager_id',$manager)->get();
+       $count=count($comment);
+       if ($count > 0){
+           return response()->json([
+               'status'=>'ok',
+               'count'=>$count
+           ]);
+       }
+      else{
+          return response()->json([
+             'status'=>'ok',
+             'massager'=>'شما فعالیتی نداشته اید'
+          ]);
+      }
+    }
 }

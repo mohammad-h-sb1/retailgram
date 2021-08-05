@@ -62,8 +62,6 @@ class ProductRatingController extends Controller
      */
     public function show(ProductRating $Rating)
     {
-
-        auth()->loginUsingId(1);
         return response()->json([
             'status'=>'ok',
             'data'=>new ProductRatingCollection($Rating)
