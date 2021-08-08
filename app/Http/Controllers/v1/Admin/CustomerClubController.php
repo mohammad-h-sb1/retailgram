@@ -4,9 +4,12 @@ namespace App\Http\Controllers\v1\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Http\Resources\Admin\CustomerClubCollection;
+use App\Http\Resources\Front\CustomerClubLogCollection;
 use App\Models\CustomerClub;
+use App\Models\CustomerClubLog;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Support\Facades\Auth;
 
 class CustomerClubController extends Controller
@@ -44,12 +47,17 @@ class CustomerClubController extends Controller
     public function store(Request $request)
     {
         $data=[
-            'user_id'=>auth()->user()->id,
+            'user'=>auth()->user()->id,
             'name'=>$request->name,
+            'type'=>$request->type,
             'rating'=>$request->rating,
         ];
+
         $club=CustomerClub::create($data);
-        return response()->json($club);
+        return response()->json([
+            'status'=>'ok',
+            'data'=>new CustomerClubCollection($club)
+        ]);
     }
 
     /**
@@ -60,9 +68,16 @@ class CustomerClubController extends Controller
      */
     public function show(CustomerClub $customerClub)
     {
+        $customerClubLog=CustomerClubLog::query()->where('customer_club_id',$customerClub->id)->get();
+        $count=count($customerClubLog);
+
         return response()->json([
             'status'=>'ok',
-            'data'=>new CustomerClubCollection($customerClub)
+            'data'=>[
+                'customerClub'=>new CustomerClubCollection($customerClub),
+                'customerClubLog'=>CustomerClubLogCollection::collection($customerClubLog),
+                'count'=>$count
+            ]
         ]);
     }
 
@@ -74,7 +89,10 @@ class CustomerClubController extends Controller
      */
     public function edit(CustomerClub $customerClub)
     {
-        return response()->json($customerClub);
+        return response()->json([
+            'status'=>'ok',
+            'data'=>new CustomerClubCollection($customerClub),
+        ]);
 
     }
 
@@ -88,13 +106,13 @@ class CustomerClubController extends Controller
     public function update(Request $request, CustomerClub $customerClub)
     {
         $data=[
-            'user_id'=>auth()->user()->id,
-            'user_rating'=>$request->user_rating,
-            'name'=>$request->user_rating,
+            'user'=>auth()->user()->id,
+            'name'=>$request->name,
+            'type'=>$request->type,
             'rating'=>$request->rating,
         ];
         $customerClub->update($data);
-        return response()->json($data);
+
     }
 
     /**
@@ -106,43 +124,9 @@ class CustomerClubController extends Controller
     public function destroy(CustomerClub $customerClub)
     {
         $customerClub->delete();
-        return response()->json($customerClub);
     }
 
-    public function addToLevelClub(CustomerClub $customerClub)
-    {
-        auth()->loginUsingId(1);
 
-
-        if (auth()->user()->rating > $customerClub->golden_level())
-        {
-            $user=User::query()->where('id',auth()->user()->id)->pluck('rating_level');
-            $user->rating_level='golden_level';
-            dd($user);
-        }
-        elseif (auth()->user()->rating > $customerClub->silver_level())
-        {
-            $data=[
-                'user_id'=>auth()->user()->id,
-                'level'=>$customerClub->silver_level,
-            ];
-            return response()->json($data);
-        }
-        elseif (auth()->user()->rating > $customerClub->bronze_level()){
-            $data=[
-                'user_id'=>auth()->user()->id,
-                'level'=>$customerClub->bronze_level,
-            ];
-            return response()->json($data);
-        }
-        else{
-             $data=[
-                'user_id'=>auth()->user()->id,
-                'level'=>$customerClub->normal_level(),
-            ];
-            return response()->json($data);
-        }
-    }
 
 
 }

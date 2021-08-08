@@ -17,7 +17,8 @@ class CustomerClubCollection extends JsonResource
     {
         return[
             'name'=>$this->name,
-            'level'=>$this->level,
+            'type'=>$this->type,
+            'rating'=>$this->rating,
             'created_at'=>(string)$this->created_at,
         ];
     }

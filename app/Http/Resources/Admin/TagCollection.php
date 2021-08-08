@@ -19,9 +19,9 @@ class TagCollection extends JsonResource
     {
 
         return[
-            'properties'=>new PropertyCollection($this->property),
+//            'properties'=>new PropertyCollection($this->property),
             'sizes'=>SizeCollection::collection($this->sizes),
-            'product'=>new ProductCollection($this->product),
+            'product'=>new \App\Http\Resources\Front\ProductCollection($this->product),
             'attributes'=>$this->attributes,
             'created_at'=>(string)$this->created_at
 

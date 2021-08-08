@@ -11,6 +11,8 @@ use App\Models\Discount;
 use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\Rule;
 
 class CartController extends Controller
 {
@@ -21,7 +23,6 @@ class CartController extends Controller
      */
     public function index()
     {
-        auth()->loginUsingId(1);
         $cart=Cart::query()->where('user_id',auth()->user()->id)->get();
         return response()->json([
             'status'=>'ok',
@@ -47,19 +48,31 @@ class CartController extends Controller
      */
     public function store(CartStore $request)
     {
-        auth()->loginUsingId(1);
-        $data=[
+        $validator = Validator::make($request->all(), [
+            'product_id' => 'required|nullable|integer|numeric|exists:products,id',
+            'tag_id' => 'required|integer|numeric|exists:tags,id',
+            'count'=>'string',
+            'user_id' => ['nullable', 'integer', Rule::exists('users', 'id')->where(function ($query) {
+                return $query->where('type', 'USER');
+            })],
+
+        ]);
+        if ($validator->failed()){
+            return response()->json([
+                'status'=>'VALIDATION_ERROR',
+                'errors'=>$validator->errors()
+            ],422);
+        }
+        $cart=Cart::create([
             'user_id'=>auth()->user()->id,
             'product_id'=>$request->product_id,
-            'tag_id'=>$request->product_id,
-            'count'=>$request->count,
-            'discount_id'=>$request->discount_id
-        ];
-        $cart=Cart::create($data);
+            'tag_id'=>$request->tag_id,
+            'count'=>$request->tag_id
+        ]);
         return response()->json([
             'status'=>'ok',
             'data'=>new CartCollection($cart)
-        ]);
+        ],201);
     }
 
     /**
@@ -68,9 +81,8 @@ class CartController extends Controller
      * @param  \App\Models\Cart  $cart
      * @return \Illuminate\Http\Response
      */
-    public function show(Cart $cart)
+    public function show(Cart $cart,)
     {
-        auth()->loginUsingId(2);
         if (auth()->user()->id === $cart->user_id){
             return response()->json([
                 'status'=>'ok',

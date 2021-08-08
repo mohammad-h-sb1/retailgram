@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Http\Resources\Admin;
+namespace App\Http\Resources\Front;
 
-use App\Http\Resources\Front\CartCollection;
+use App\Http\Resources\Admin\CustomerClubCollection;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Http\Resources\Json\ResourceCollection;
 
-class PaymentCollection extends JsonResource
+class CustomerClubLogCollection extends JsonResource
 {
     /**
      * Transform the resource collection into an array.
@@ -17,11 +17,8 @@ class PaymentCollection extends JsonResource
     public function toArray($request)
     {
         return[
-            'status'=>$this->status,
-//            'product'=>ProductCollection::collection($this->products),
-            'amount'=>$this->amount,
-            'discount_id'=>$this->discount_id
-
+            'CustomerClub'=>$this->customerClubs,
+            'user_rating'=>$this->user_rating
         ];
     }
 }

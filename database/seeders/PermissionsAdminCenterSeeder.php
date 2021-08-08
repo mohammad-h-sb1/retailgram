@@ -48,7 +48,7 @@ class PermissionsAdminCenterSeeder extends Seeder
             ] ,
             [
                 'name'=>'وضعیت فروشگاه',
-                'code'=>'status_customer_club_user',
+                'code'=>'status_shop_user',
                 'type'=>'admin_center'
             ] ,
 

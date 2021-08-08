@@ -56,7 +56,7 @@ class PermissionsUserSeeder extends Seeder
             'name'=>'فتن به لول بالا تر',
             'code'=>'add_to_level_club',
             'type'=>'user'
-        ],
+            ],
 
             //show tag product
             [

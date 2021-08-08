@@ -20,11 +20,17 @@ class CreateDiscountsTable extends Migration
             $table->unsignedBigInteger('product_id')->nullable();
             $table->unsignedBigInteger('influencers_id')->nullable();
             $table->string('code');
-            $table->string('discount_percendiscount_end_datet')->nullable();
             $table->string('amount_of_discount')->nullable();
-//            $table->timestamp('discount_start_date');
-//            $table->timestamp('discount_end_date');
-            $table->boolean('status')->default(false);
+            $table->enum('type', ['DISCOUNT_CODE', 'OFFER'])->default('DISCOUNT_CODE');
+            $table->enum('value_type', ['PERCENT', 'AMOUNT'])->default('PERCENT');
+            $table->enum('finish_type', ['COUNTDOWN', 'DATE'])->default('DATE');
+            $table->tinyInteger('count_use')->default(0);
+            $table->timestamp('start_date')->nullable();
+            $table->timestamp('end_date')->nullable();
+            $table->unsignedInteger('value')->default(0);
+            $table->unsignedInteger('max_value')->nullable();
+            $table->enum('status', ['ENABLE', 'DISABLE']);
+
             $table->timestamps();
 
             $table->foreign('user_id')
@@ -42,11 +48,8 @@ class CreateDiscountsTable extends Migration
                 ->on('products')
                 ->onUpdate('CASCADE')
                 ->onDelete('CASCADE');
-//            $table->foreign('influencers_id')
-//                ->references('id')
-//                ->on('influencers')
-//                ->onUpdate('CASCADE')
-//                ->onDelete('CASCADE');
+
+//
         });
     }
 

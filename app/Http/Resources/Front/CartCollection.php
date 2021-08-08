@@ -20,7 +20,6 @@ class CartCollection extends JsonResource
     {
         return[
             'product'=>\App\Http\Resources\Front\Product\ProductCollection::collection($this->products),
-            'user'=>new UserCollection($this->user),
             'tag'=>TagCollection::collection($this->tags),
             'count'=>$this->count,
             'created_at'=>(string)$this->created_at,

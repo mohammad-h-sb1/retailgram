@@ -22,9 +22,13 @@ class StylistProductController extends Controller
     {
         $stylist=StyList::query()->where('user_id',auth()->user()->id)->first();
         $stylistProduct=$stylist->StylistProduct->where('stylist_id',$stylist->id)->get();
+        $count=count($stylistProduct);
         return response()->json([
             'status'=>'ok',
-            'date'=>StyListProductCollection::collection($stylistProduct)
+            'date'=>[
+                'stylist'=>StyListProductCollection::collection($stylistProduct),
+                'count'=>$count
+            ]
         ]);
 
     }

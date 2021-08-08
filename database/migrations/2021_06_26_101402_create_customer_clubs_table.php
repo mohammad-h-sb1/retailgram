@@ -18,8 +18,9 @@ class CreateCustomerClubsTable extends Migration
     {
         Schema::create('customer_clubs', function (Blueprint $table) {
             $table->id();
-            $table->string('name')->nullable();
-            $table->enum('level',CustomerClub::LEVEL)->default(CustomerClub::NORMAL_LEVEL);
+            $table->string('name')->unique();
+            $table->string('type')->unique();
+            $table->integer('rating')->unique();
             $table->timestamps();
         });
     }

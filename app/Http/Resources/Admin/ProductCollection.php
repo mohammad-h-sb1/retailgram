@@ -19,7 +19,7 @@ class ProductCollection extends JsonResource
     {
 
         return[
-            'user'=>new UserCollection($this->user),
+//            'user'=>new UserCollection($this->user),
             'center_shop'=>new CenterShopCollection($this->centerShop),
             'category'=>new CategoryCollection($this->category),
             'productRating'=>ProductRatingCollection::collection($this->productRatings),

@@ -9,6 +9,7 @@ use App\Http\Resources\Admin\DiscountCollection;
 use App\Models\Discount;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class DiscountController extends Controller
 {
@@ -44,22 +45,7 @@ class DiscountController extends Controller
      */
     public function store(Request $request)
     {
-        auth()->loginUsingId(1);
-        $data=[
-            'user_id'=>auth()->user()->id,
-            'category_id'=>$request->category_id,
-            'protect_id'=>$request->protect_id,
-            'code'=>$request->code,
-            'influencers_id'=>$request->influencers_id,
-            'discount_percent'=>$request->discount_percent,
-            'amount_of_discount'=>$request->amount_of_discount,
-            'code_validity'=>$request->code_validity,
-        ];
-        $discount=Discount::create($data);
-        return response()->json([
-            'status'=>'ok',
-            'data'=>new DiscountCollection($discount)
-        ]);
+
     }
 
     /**

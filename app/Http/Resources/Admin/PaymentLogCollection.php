@@ -17,14 +17,14 @@ class PaymentLogCollection extends JsonResource
      */
     public function toArray($request)
     {
-        return [
-            'user_id'=>UserCollection::collection($this->users),
+        return array(
+//            'user_id'=>UserCollection::collection($this->users),
             'payment'=>PaymentCollection::collection($this->payments),
-            'product'=>ProductCollection::collection($this->products),
+            'product'=>\App\Http\Resources\Front\Product\ProductCollection::collection($this->products),
 //            'discount'=>DiscountCollection::collection($this->discounts),
             'tag'=>TagCollection::collection($this->tags),
             'status'=>$this->status,
 
-        ];
+        );
     }
 }

@@ -19,7 +19,7 @@ class StyListProductCollection extends JsonResource
     {
 
         return [
-//            'product'=>$this->product,
+            'product'=>$this->product,
             'description'=>$this->description,
 
         ];

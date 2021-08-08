@@ -42,6 +42,7 @@ class UserRatingController extends Controller
      */
     public function store(Request $request)
     {
+
         $product=Product::query()->where('id',$request->product_id)->where('status',1)->pluck('rating')->first();
         $cart=Cart::query()->where('product_id',$request->product_id)->where('status',1)->pluck('count')->first();
         if ($cart==true){

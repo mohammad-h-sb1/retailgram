@@ -32,18 +32,30 @@ class UserController extends Controller
 
     public function store(Request $request)
     {
-        $data = [
-            'name' => $request->name,
-            'customer_id'=>1,
-            'mobile' => $request->mobile,
-            'type' => $request->type,
-            'email' => $request->email,
-            'gender' => $request->gender,
-            'password' => Hash::make('password'),
-            'api_token'=>Str::random(100),
-        ];
 
-        $user = User::create($data);
+
+        $validData=$this->validate($request,[
+            'name' => 'required|string|max:255',
+            'mobile' => 'required|string|digits:11',
+            'email' => '|string|email|max:255|unique:users',
+            'password' => 'required|string|min:6|',
+            'type' => 'required',
+            'gender' => 'required|',
+            'state'=>'string',
+        ]);
+
+        $user=User::create([
+            'name'=>$validData['name'],
+            'email'=>$validData['email'],
+            'password'=>bcrypt($validData['password']),
+            'mobile'=>$validData['mobile'],
+            'gender'=>$validData['gender'],
+            'type' => $request->type,
+            'api_token'=>Str::random(100),
+            'state'=>$request->state,
+            'city_id'=>$request->city_id,
+            'province_id'=>$request->province_id
+        ]);
         $user->permissions()->sync($request->input('permissionLog'));
         if ($request->type === 'stylist'){
             $data=[

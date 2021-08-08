@@ -254,4 +254,9 @@ class User extends Authenticatable
 //        return $this->hasMany(PermissionLog::class,'user_id','id');
 //    }
 
+    public function customerClubLog()
+    {
+        return $this->belongsTo(CustomerClubLog::class);
+    }
+
 }

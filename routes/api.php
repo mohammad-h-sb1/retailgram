@@ -23,6 +23,7 @@ use App\Http\Controllers\v1\Front\CityController;
 use App\Http\Controllers\v1\Front\ColorController;
 use App\Http\Controllers\v1\Front\CommentController;
 use App\Http\Controllers\v1\Front\CommentLikeController;
+use App\Http\Controllers\v1\Front\CustomerClubLogController;
 use App\Http\Controllers\v1\Front\FavoriteListController;
 use App\Http\Controllers\v1\Front\LikeController;
 use App\Http\Controllers\v1\Front\OrderController;
@@ -119,6 +120,12 @@ Route::middleware('auth:api')->group(function () {
             Route::put('/update/{customerClub}', [CustomerClubController::class, 'update'])->middleware('checkGate:update_customer_admin');
             Route::delete('/delete/{customerClub}', [CustomerClubController::class, 'destroy'])->middleware('checkGate:delete_customer_admin');
         });
+        //admin customer Club log
+        Route::prefix('admin/customer/log')->name('admin.customer.log')->group(function (){
+            Route::get('/',[CustomerClubLogController::class,'index'])->middleware('checkGate:add_customer_admin');
+            Route::delete('/delete/{customerClubLog}',[CustomerClubLogController::class,'destroy'])->middleware('checkGate:delete_customer_admin');
+        });
+
 
         //admin permission
         Route::prefix('admin/permission')->name('permission')->group(function () {
@@ -260,6 +267,8 @@ Route::middleware('auth:api')->group(function () {
             //فعالیت manager در data
             Route::get('active/data/{id}',[ManagerController::class,'active']);
         });
+
+
      });
 
     Route::name('admin_center')->group(function (){
@@ -271,7 +280,7 @@ Route::middleware('auth:api')->group(function () {
             Route::get('/edit/{shop}',[ShopController::class,'edit'])->middleware('checkGate:edit_shop_admin_center');
             Route::put('/update/{shop}',[ShopController::class,'update'])->middleware('checkGate:update_shop_admin_center');
             Route::delete('/delete/{shop}',[ShopController::class,'destroy'])->middleware('checkGate:delete_shop_admin_center');
-            Route::post('/status/{id}',[ShopController::class,'status'])->middleware('checkGate:status_customer_club_user');
+            Route::post('/status/{id}',[ShopController::class,'status'])->middleware('checkGate:store_shop_admin_center');
 
 
         });
@@ -452,8 +461,12 @@ Route::middleware('auth:api')->group(function () {
         //user customer club
         Route::prefix('customer/club')->name('customer/club')->group(function (){
             Route::get('/',[CustomerClubController::class,'index'])->middleware('checkGate:index_customer_club_user');
-            Route::get('/show/{}',[CustomerClubController::class,'show'])->middleware('checkGate:show_customer_club_user');
-            Route::post('/add/to/level/club/{customerClub}',[CustomerClubController::class,'addToLevelClub'])->middleware('checkGate:add_to_level_club');
+           //customer log
+            Route::post('/store',[CustomerClubLogController::class,'store'])->middleware('checkGate:show_customer_club_user');
+            Route::get('/show',[CustomerClubLogController::class,'show'])->middleware('checkGate:show_customer_club_user');
+            Route::delete('delete/{customerClubLog}',[CustomerClubLogController::class,'destroy'])->middleware('checkGate:show_customer_club_user');
+          //add to level new
+            Route::post('/add/to/{id}',[CustomerClubLogController::class,'addToLevelClub'])->middleware('checkGate:add_to_level_club');
 
         });
 
@@ -553,7 +566,7 @@ Route::middleware('auth:api')->group(function () {
             Route::get('/edit/{payment}',[PaymentController::class,'edit'])->middleware('checkGate:payment_edit');
             Route::put('/update/{payment}',[PaymentController::class,'update'])->middleware('checkGate:payment_update');
             Route::delete('/delete/{payment}',[PaymentController::class,'destroy'])->middleware('checkGate:payment_delete');
-            Route::post('/status/{id}',[PaymentController::class,'status'])->middleware('checkGate:status');
+            Route::post('/status/{id}',[PaymentController::class,'status'])->middleware('checkGate:payment_status');
         });
 
         //payment log
@@ -588,8 +601,8 @@ Route::middleware('auth:api')->group(function () {
         });
 
         //rating
-        Route::prefix('rating')->name('rating')->group(function (){
-            Route::post('/store',[UserRatingController::class,'store'])->middleware('checkGate:add_rating');
+        Route::prefix('rating')->name('rating.')->group(function (){
+            Route::post('/store',[UserRatingController::class,'store'])->middleware('checkGate:add_rating')->name('store');
             Route::get('/show',[UserRatingController::class,'show'])->middleware('checkGate:show_rating');
         });
 
@@ -598,6 +611,8 @@ Route::middleware('auth:api')->group(function () {
             Route::get('/',[StylistController::class,'index'])->middleware('checkGate:index_stylist');
             Route::get('/show/{stylist}',[StylistController::class,'show'])->middleware('checkGate:show_stylist');
         });
+
+
     });
 
     Route::name('Stylist')->group(function (){

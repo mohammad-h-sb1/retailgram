@@ -17,7 +17,7 @@ class Payment extends Model
 
     public function paymentLog()
     {
-        return $this->belongsTo(PaymentLog::class);
+        return $this->belongsTo(PaymentLog::class,'id','payment_id');
     }
 
     public function user()

@@ -4,11 +4,18 @@ namespace App\Http\Controllers\v1\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Http\Resources\Admin\PaymentCollection;
+use App\Http\Resources\Admin\PaymentLogCollection;
+use App\Http\Resources\Front\ProductSoldCollection;
 use App\Models\Cart;
 use App\Models\Payment;
+use App\Models\PaymentLog;
 use App\Models\Product;
+use App\Models\ProductShop;
+use App\Models\ProductSold;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
+use Illuminate\Support\Facades\Auth;
 
 class PaymentController extends Controller
 {
@@ -48,6 +55,7 @@ class PaymentController extends Controller
         $product=Product::query()->where('id',$request->product_id)->get();
         $cart=Cart::query()->where('product_id',$request->product_id)->where('user_id',auth()->user()->id)->get();
         $payment=$product->sum('The_final_amount') * $cart->sum('count');
+        $rating=$cart->sum('count') * $product->sum('rating');
         $data=[
             'user_id'=>auth()->user()->id,
             'product_id'=>$request->product_id,
@@ -55,10 +63,20 @@ class PaymentController extends Controller
             'amount'=>$payment,
         ];
         $payment=Payment::create($data);
+
+        $paymentLogData=[
+            'user_id'=>auth()->user()->id,
+            'product_id'=>$request->product_id,
+            'payment_id'=>$payment->id,
+            'discount_id'=>$request->discount_id,
+            'rating'=>$rating
+        ];
+        $paymentLog=PaymentLog::create($paymentLogData);
         return response()->json([
             'status'=>'ok',
-            'data'=>new PaymentCollection($payment)
-        ]);
+            'data'=>new PaymentLogCollection($paymentLog)
+        ],201);
+
 
 
     }
@@ -146,19 +164,48 @@ class PaymentController extends Controller
             ]);
         }
     }
-        public function status($id,Request $request)
+    public function status($id,Request $request)
     {
-        auth()->loginUsingId(1);
-        if (auth()->user()->type === 'admin'| auth()->user()->type === 'manager') {
-            $status = Payment::query()->findOrFail($id);
-            $status->update([
-                    'status' => !$status->status,
+        $payment = Payment::query()->where('id',$id)->first();
+        $paymentLog=PaymentLog::query()
+            ->where('payment_id',$payment->id)
+            ->where('user_id',auth()->user()->id)
+            ->pluck('rating')->first();
+
+        if (auth()->user()->id === $payment->user_id ) {
+            $payment->update([
+                    'status' => !$payment->status,
                 ]
             );
-            return response()->json([
-                'status'=>'ok',
-                'data'=>new PaymentCollection($status)
-            ]);
+            if ($payment->status == 1){
+                $rating=auth()->user()->rating + $paymentLog;
+                auth()->user()->update([
+                    'rating'=>$rating
+                ]);
+            }
+            else{
+                $rating=auth()->user()->rating - $paymentLog;
+                auth()->user()->update([
+                    'rating'=>$rating
+                ]);
+            }
+            if ($payment->status == 1){
+                $product=Product::query()->where('id',$payment->product_id)->first();
+                $data=[
+                   'user_id'=>auth()->user()->id,
+                   'center_shop_id'=>$product->centerShop->id,
+                   'product_id'=>$product->id,
+                   'province_id'=>$request->province_id,
+                   'city_id'=>$request->city_id,
+                   'count'=>$request->count,
+                   'status'=>1
+               ];
+                $productSold=ProductSold::create($data);
+                return response()->json([
+                    'status'=>'ok',
+                    'data'=>new ProductSoldCollection($productSold)
+                ]);
+            }
         }
         else{
             return response()->json([
