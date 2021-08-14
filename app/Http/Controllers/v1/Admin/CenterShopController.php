@@ -6,8 +6,10 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\CenterShop\CenterShopStore;
 use App\Http\Requests\CenterShop\CenterShopUpdate;
 use App\Http\Resources\Admin\CenterShopCollection;
+use App\Http\Resources\Admin\ProductCollection;
 use App\Http\Resources\Admin\UserCollection;
 use App\Models\CenterShop;
+use App\Models\PermissionLog;
 use App\Models\Product;
 use App\Models\ProductSold;
 use App\Models\User;
@@ -147,6 +149,7 @@ class CenterShopController extends Controller
             $center->user()->update([
                 'type'=>'admin_center'
             ]);
+            PermissionLog::query()->where('user_id',$center->user_id)->delete();
             return response()->json([
                 'status'=>'ok',
                 'massage'=>'یوزر به ادمین برند ها اضافه شد'
@@ -188,11 +191,19 @@ class CenterShopController extends Controller
     {
         $brand=CenterShop::query()->where('id',$id)->first();
         $product=$brand->products;
-        $productSold=ProductSold::query()->whereIn('product_id',$product)->where('status',1)->get();
+        $product_id=$brand->products->pluck('id');
+        $productSold=ProductSold::query()->whereIn('product_id',$product_id)->where('center_shop_id',$brand->id)->where('status',1)->get();
         $count=count($productSold);
+        $countProduct=$productSold->sum('count');
+        $total_price=ProductSold::query()->where('center_shop_id',$id)->sum('total_price');
         return response()->json([
             'status'=>'ok',
-            'data'=>$count
+            'data'=> [
+                'product'=>$product,
+                'count'=>$count,
+                'countProduct'=>$countProduct,
+                'total_price'=>$total_price
+            ]
         ]);
     }
 

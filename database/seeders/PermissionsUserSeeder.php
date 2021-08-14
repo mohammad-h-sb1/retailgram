@@ -493,7 +493,7 @@ class PermissionsUserSeeder extends Seeder
             );
         }
         $Permissions=Permission::query()->where('type','user')->select('id')->get()->pluck('id');
-        $user=\App\Models\User::find(6);
+        $user=\App\Models\User::find(8);
         $user->permissions()->sync($Permissions);
 
 

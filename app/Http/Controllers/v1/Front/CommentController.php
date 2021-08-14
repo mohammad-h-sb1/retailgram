@@ -20,7 +20,7 @@ class CommentController extends Controller
      */
     public function index()
     {
-        auth()->loginUsingId(1);
+
         $comment=Comment::query()->where('user_id',auth()->user()->id)->get();
         return response()->json([
             'status'=>'ok',
@@ -46,7 +46,6 @@ class CommentController extends Controller
      */
     public function store(Request $request)
     {
-        auth()->loginUsingId(1);
         $data=[
             'user_id'=>auth()->user()->id,
             'product_id'=>$request->product_id,

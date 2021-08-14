@@ -454,8 +454,8 @@ class PermissionsSeeder extends Seeder
 
             //admin product Sold
             [
-                'name'=>'دیدنه همه product_Sold',
-                'code'=>'index_product_Sold_admin',
+                'name'=>'دیدنه همه product_sold',
+                'code'=>'index_product_sold_admin',
                 'type'=>'admin'
             ],
             [

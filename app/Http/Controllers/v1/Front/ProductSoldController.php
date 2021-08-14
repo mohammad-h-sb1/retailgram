@@ -127,4 +127,18 @@ class ProductSoldController extends Controller
             ],400);
         }
     }
+
+    public function total_price()
+    {
+        $productSold=ProductSold::query()->where('user_id',auth()->user()->id)->get();
+        $total_price=$productSold->sum('total_price');
+
+        return response()->json([
+            'status'=>'ok',
+            'data'=>[
+                'product_sold'=>ProductSoldCollection::collection($productSold),
+                'total_price'=>$total_price
+            ]
+        ]);
+    }
 }

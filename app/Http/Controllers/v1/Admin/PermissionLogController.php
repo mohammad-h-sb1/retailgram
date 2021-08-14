@@ -19,7 +19,6 @@ class PermissionLogController extends Controller
     public function index()
     {
         $user= User::all();
-        dd($user->permissions);
         return response()->json([
             'status'=>'ok',
             'data'=>$user->permissions

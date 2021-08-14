@@ -7,6 +7,7 @@ use App\Http\Requests\ProductSold\ProductSoldStore;
 use App\Http\Resources\Admin\ProductSoldCollection;
 use App\Models\CenterShop;
 use App\Models\City;
+use App\Models\Product;
 use App\Models\ProductSold;
 use App\Models\Province;
 use App\Models\User;
@@ -35,12 +36,12 @@ class ProductSoldController extends Controller
             ]);
         }
         elseif (auth()->user()->type ==='admin'){
-            $productSold = ProductSold::all();
-            $count=count($productSold);
+            $productsSold= ProductSold::all();
+            $count=count($productsSold);
             return response()->json([
                 'status' => 'ok',
                 'data' =>[
-                    'productSold'=>ProductSoldCollection::collection($productSold),
+                    'productSold'=>ProductSoldCollection::collection($productsSold),
                     'count'=>$count
                 ],
             ]);
@@ -78,6 +79,7 @@ class ProductSoldController extends Controller
                 'product_id' => $request->product_id,
                 'count' => $request->count,
                 'customer_address' => $request->customer_address,
+                'total_price'=>$request->total_price,
             ];
             $product = ProductSold::create($data);
             return response()->json([
@@ -101,7 +103,7 @@ class ProductSoldController extends Controller
      */
     public function show(ProductSold $productsSold)
     {
-        auth()->loginUsingId(2);
+
         if ($productsSold->centerShop->user_id === auth()->user()->id) {
             return response()->json([
                 'status' => 'ok',
@@ -131,7 +133,7 @@ class ProductSoldController extends Controller
      */
     public function edit(ProductSold $productsSold)
     {
-        auth()->loginUsingId(2);
+
         if ($productsSold->centerShop->user_id === auth()->user()->id) {
             return response()->json([
                 'status' => 'ok',
@@ -161,7 +163,6 @@ class ProductSoldController extends Controller
      */
     public function update(ProductSoldStore $request, ProductSold $productsSold)
     {
-        auth()->loginUsingId(4);
         if ($productsSold->centerShop->user_id === auth()->user()->id) {
             $data = [
                 'user_id' => auth()->user()->id,
@@ -169,6 +170,7 @@ class ProductSoldController extends Controller
                 'product_id' => $request->product_id,
                 'count' => $request->count,
                 'customer_address' => $request->customer_address,
+                'total_price'=>$request->total_price
             ];
             $productsSold->update($data);
         }
@@ -285,6 +287,38 @@ class ProductSoldController extends Controller
                 'Inactive'=>$countInactive
             ]
         ]);
+    }
+
+    public function totalSales()
+    {
+        if (auth()->user()->type === 'admin') {
+            $productSold = ProductSold::query()->where('status', 1)->get();
+            $total_price = $productSold->sum('total_price');
+            return response()->json([
+                'status' => 'ok',
+                'data' => $total_price
+            ]);
+        }
+        elseif (auth()->user()->type === 'admin_center'){
+            $adminCenter = CenterShop::query()
+                ->where('user_id', auth()->user()->id)
+                ->pluck('id');
+            $productSold = ProductSold::query()
+                ->where('center_shop_id', $adminCenter)
+                ->where('status',1)
+                ->get();
+            $total_price=$productSold->sum('total_price');
+            return response()->json([
+                'status'=>'ok',
+                'data'=>$total_price
+            ]);
+        }
+        else{
+            return response()->json([
+                'status'=>'Error',
+                'massage'=>'شما دست رسی ندارید'
+            ],403);
+        }
     }
 
 }

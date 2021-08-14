@@ -89,18 +89,20 @@ class Product1Controller extends Controller
      */
     public function store(Request $request)
     {
+        $centerShop=CenterShop::query()->where('user_id',auth()->user()->id)->pluck('id')->first();
         $data=[
             'user_id'=>auth()->user()->id,
-            'center_shop_id'=>$request->center_shop_id,
+            'center_shop_id'=>$centerShop,
             'category_id'=>$request->category_id,
             'name'=>$request->name,
             'slug'=>$request->slug,
             'gender'=>$request->gender,
             'description'=>$request->description,
             'price_product'=>$request->price_product,
-            "discount_product"=>$request->discount_product,
+            'discount_product'=>$request->discount_product,
             'rating'=>$request->rating,
         ];
+
         $product=Product::create($data);
         return response()->json([
             'status'=>'ok',
@@ -122,7 +124,7 @@ class Product1Controller extends Controller
         $countProductSold=count($productSold);
         $comment=Comment::query()->where('product_id',$product->id)->where('status',1)->get();
         $countComment=count($comment);
-        if (auth()->user()->type === 'admin')
+        if (auth()->user()->type === 'admin'| auth()->user()->type ==='manager')
         {
             return response()->json([
                 'status'=>'oky',
@@ -268,6 +270,22 @@ class Product1Controller extends Controller
         return response()->json([
             'status'=>'ok',
             'data'=>new ProductCollection($status)
+        ]);
+    }
+
+    public function productSold($id)
+    {
+        $product=Product::query()->where('id',$id)->first();
+        $productSold=ProductSold::query()->where('product_id',$product->id)->get();
+        $count=$productSold->sum('count');
+        $total_price=$productSold->sum('total_price');
+        return response()->json([
+            'status'=>'ok',
+            'data'=>[
+                'productSold'=>$productSold,
+                'count'=>$count,
+                'total_price'=>$total_price
+            ]
         ]);
     }
 }

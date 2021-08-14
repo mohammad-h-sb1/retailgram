@@ -3,12 +3,15 @@
 namespace App\Http\Controllers\v1\Front;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\Front\CommentCollection;
 use App\Http\Resources\Front\ProductCollection;
+use App\Models\Category;
 use App\Models\Comment;
 use App\Models\Like;
 use App\Models\Product;
 use App\Models\ProductSold;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class Product1Controller extends Controller
 {
@@ -59,7 +62,7 @@ class Product1Controller extends Controller
      */
     public function show(Product $product)
     {
-        if ($product->status === 1){
+        if ($product->status == 1){
             $like=Like::query()->where('product_id',$product->id)->get();
             $countLike=count($like);
             $productSold=ProductSold::query()->where('product_id',$product->id)->get();
@@ -70,6 +73,7 @@ class Product1Controller extends Controller
                 'status'=>'ok',
                 'data'=>[
                     'product'=>new ProductCollection($product),
+                    'comment'=>CommentCollection::collection($comment),
                     'countLike'=>$countLike,
                     'countProductSold'=>$countProductSold,
                     'countComment'=>$countComment
@@ -114,5 +118,54 @@ class Product1Controller extends Controller
     public function destroy(Product $product)
     {
         //
+    }
+
+    //دیدن کامنت های یک پست برای manager
+    public function showComment($id)
+    {
+        $product=Product::query()->where('id',$id)->where('status',1)->first();
+        $comment=$product->comments;
+        $countComment=count($comment);
+        return response()->json([
+            'status'=>'ok',
+            'data'=>[
+                'product'=>new ProductCollection($product),
+                'comment'=>CommentCollection::collection($comment),
+                'countComment'=>$countComment
+            ]
+        ]);
+    }
+
+    //محبوب ترین ها
+    public function favorites()
+    {;
+        $product=Product::query()->orderBy('like','DESC')->where('status',1)->paginate(5);
+        return response()->json([
+            'status'=>'ok',
+            'data'=>ProductCollection::collection($product)
+        ]);
+
+    }
+    //اخرین پست ها
+    public function recentPosts()
+    {
+        $product=Product::query()->orderBy('created_at','DESC')->where('status',1)->paginate(5);
+        return response()->json([
+            'status'=>'ok',
+            'data'=>ProductCollection::collection($product)
+        ]);
+    }
+    //پیشنهاد برای شما
+    public function suggestionsForYou()
+    {
+        $productSold=ProductSold::query()->where('user_id',auth()->user()->id)->pluck('product_id');
+        $product1=Product::query()->whereIn('id',$productSold)->pluck('category_id');
+        $category=Category::query()->whereIn('id',$product1)->pluck('id');
+        $product=Product::query()->whereIn('category_id',$category)->orderBy('like','DESC')->paginate(5);
+        return response()->json([
+            'status'=>'ok',
+            'data'=>ProductCollection::collection($product)
+        ]);
+
     }
 }

@@ -17,7 +17,6 @@ class ProductSoldCollection extends JsonResource
     public function toArray($request)
     {
         return [
-
             'center_shop'=>new CenterShopCollection($this->centerShop),
             'product_id'=>new \App\Http\Resources\Front\Product\ProductCollection($this->Product),
             'count'=>$this->count,

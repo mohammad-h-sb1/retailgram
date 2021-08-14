@@ -23,12 +23,12 @@ class Product extends Model
 
     public function category()
     {
-        return $this->belongsTo(Category::class);
+        return $this->belongsTo(Category::class,);
     }
 
     public function productSolds()
     {
-        return $this->hasMany(ProductSold::class);
+        return $this->hasMany(ProductSold::class,'product_id','id');
     }
 
     public function comments()

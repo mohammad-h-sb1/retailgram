@@ -5,7 +5,9 @@ namespace App\Http\Controllers\v1\Admin;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Category\CategoryStore;
 use App\Http\Resources\Admin\CategoryCollection;
+use App\Http\Resources\Admin\ProductSoldCollection;
 use App\Models\Category;
+use App\Models\Product;
 use App\Models\ProductSold;
 use Illuminate\Http\Request;
 
@@ -78,9 +80,15 @@ class CategoryController extends Controller
      */
     public function show(Category $category)
     {
+        $product=Product::query()->where('category_id',$category->id)->get();
+        $countProduct=count($product);
+
         return response()->json([
             'status'=>'ok',
-            'data'=>new CategoryCollection($category)
+            'data'=>[
+                'category'=>new CategoryCollection($category),
+                'countProduct'=>$countProduct
+            ]
         ]);
     }
 
@@ -156,12 +164,27 @@ class CategoryController extends Controller
     public function byCategory($id)
     {
         $category=Category::query()->where('id',$id)->first();
-        $product=$category->products;
+        $product=$category->products->pluck('id');
         $productSold=ProductSold::query()->whereIn('product_id',$product)->where('status',1)->get();
         $count=count($productSold);
         return response()->json([
             'status'=>'ok',
             'data'=>$count
+        ]);
+    }
+
+    public function totalSales($id)
+    {
+        $category=Category::query()->where('id',$id)->first();
+        $product=$category->products->pluck('id');
+        $productSold=ProductSold::query()->whereIn('product_id',$product)->where('status',1)->get();
+        $totalSales=$productSold->sum('total_price');
+        return response()->json([
+            'status'=>'ok',
+            'data'=>[
+                'productSold'=>ProductSoldCollection::collection($productSold),
+                'totalSales'=>$totalSales
+            ]
         ]);
     }
 

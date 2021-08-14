@@ -41,6 +41,11 @@ class LikeController extends Controller
             'user_id'=>auth()->user()->id,
             'product_id'=>$request->product_id,
         ];
+        $product=Product::query()->where('id',$request->product_id)->first();
+        $a=1;
+        $product->update([
+            'like'=>$product->like + $a
+        ]);
         $like=Like::create($data);
         return response()->json([
             'status'=>'ok',
@@ -89,9 +94,14 @@ class LikeController extends Controller
      */
     public function destroy(Like $like)
     {
+        if (auth()->user()->id === $like->user_id) {
+            $product=$like->product()->sum('like');
 
-        if (auth()->user()->id === $like->id) {
+            $like->product()->update([
+                'like'=>$product - 1 ,
+            ]);
             $like->delete();
+
         }
         else
         {

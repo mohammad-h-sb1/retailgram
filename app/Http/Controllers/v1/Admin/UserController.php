@@ -8,6 +8,7 @@ use App\Http\Resources\Front\StyListCollection;
 use App\Models\CustomerClub;
 use App\Models\Influencer;
 use App\Models\Manager;
+use App\Models\ProductSold;
 use App\Models\Stylist;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -140,10 +141,14 @@ class UserController extends Controller
         $user=User::query()->findOrFail($id);
         $productSold=$user->productsSold->where('status',1);
         $count=count($productSold);
+        $countProduct=$productSold->sum('count');
+        $total_price=ProductSold::query()->where('user_id',$id)->sum('total_price');
         return response()->json([
             'status'=>'ok',
             'data'=>[
-                'count'=>$count
+                'count'=>$count,
+                'countProduct'=>$countProduct,
+                'total_price'=>$total_price
             ]
         ]);
     }

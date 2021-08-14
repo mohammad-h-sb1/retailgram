@@ -79,8 +79,10 @@ Route::middleware('auth:api')->group(function () {
             Route::put('update/{category}', [AdminCategory::class, 'update'])->middleware('checkGate:update_category_admin');
             Route::delete('delete/{category}', [AdminCategory::class, 'destroy'])->middleware('checkGate:delete_category_admin');
 
-            //گزارش فروش براساس دسته بهندی
+            //تعداد گزارش فروش براساس دسته بهندی
             Route::get('sales/by/category/{id}',[AdminCategory::class,'byCategory'])->middleware('checkGate:delete_category_admin');
+            //گزارش فروش کل
+            Route::get('total/sales/{id}',[AdminCategory::class,'totalSales'])->middleware('checkGate:delete_category_admin');
         });
 
         //admin brand
@@ -120,12 +122,12 @@ Route::middleware('auth:api')->group(function () {
             Route::put('/update/{customerClub}', [CustomerClubController::class, 'update'])->middleware('checkGate:update_customer_admin');
             Route::delete('/delete/{customerClub}', [CustomerClubController::class, 'destroy'])->middleware('checkGate:delete_customer_admin');
         });
+
         //admin customer Club log
         Route::prefix('admin/customer/log')->name('admin.customer.log')->group(function (){
             Route::get('/',[CustomerClubLogController::class,'index'])->middleware('checkGate:add_customer_admin');
             Route::delete('/delete/{customerClubLog}',[CustomerClubLogController::class,'destroy'])->middleware('checkGate:delete_customer_admin');
         });
-
 
         //admin permission
         Route::prefix('admin/permission')->name('permission')->group(function () {
@@ -216,6 +218,8 @@ Route::middleware('auth:api')->group(function () {
             Route::delete('/delete/{product}',[AdminProduct::class,'destroy'])->middleware('checkGate:delete_product_admin');
             Route::post('status/{id}',[AdminProduct::class,'status'])->middleware('checkGate:status_product_admin');
 
+            //یک جنس فروخته شده
+            Route::get('sold/{id}',[AdminProduct::class,'productSold'])->middleware('checkGate:show_product_admin');
         });
 
         //admin shop
@@ -246,6 +250,8 @@ Route::middleware('auth:api')->group(function () {
             Route::get('by/city/{city}',[AdminProductSold::class,'byCity'])->middleware('checkGate:status_product_sold_admin');
             //بر اساس استان
             Route::get('by/province/{province}',[AdminProductSold::class,'province'])->middleware('checkGate:status_product_sold_admin');
+            //فروش کل
+            Route::get('total/sales',[AdminProductSold::class,'totalSales'])->middleware('checkGate:status_product_sold_admin');
         });
 
         //admin city
@@ -282,7 +288,6 @@ Route::middleware('auth:api')->group(function () {
             Route::delete('/delete/{shop}',[ShopController::class,'destroy'])->middleware('checkGate:delete_shop_admin_center');
             Route::post('/status/{id}',[ShopController::class,'status'])->middleware('checkGate:store_shop_admin_center');
 
-
         });
 
         //admin center size
@@ -315,6 +320,8 @@ Route::middleware('auth:api')->group(function () {
             Route::get('/delete/{productsSold}',[AdminProductSold::class,'destroy'])->middleware('checkGate:delete_product_sold_center');
             Route::post('status/{id}',[AdminProductSold::class,'status'])->middleware('checkGate:status_product_sold_center');
 
+            //گزارش فروش کل یک برند
+            Route::get('totalSales',[AdminProductSold::class,'totalSales'])->middleware('checkGate:status_product_sold_center');
         });
 
         //admin center tag
@@ -389,6 +396,12 @@ Route::middleware('auth:api')->group(function () {
             Route::get('active',[ManagerController::class,'active'])->middleware('checkGate:index_comment_manager');
        });
 
+        Route::prefix('manager/product')->name('manager.product')->group(function (){
+            Route::get('/',[Product1Controller::class,'index'])->middleware('checkGate:index_comment_manager');
+            Route::get('show/{product}',[Product1Controller::class,'show'])->middleware('checkGate:index_comment_manager');
+            Route::get('show/comment/{id}',[Product1Controller::class,'showComment'])->middleware('checkGate:index_comment_manager');
+        });
+
         //manger question
         Route::prefix('question')->name('question')->group(function (){
             Route::get('/',[AnswerController::class,'index'])->middleware('checkGate:index_question_manager');
@@ -462,7 +475,6 @@ Route::middleware('auth:api')->group(function () {
         Route::prefix('customer/club')->name('customer/club')->group(function (){
             Route::get('/',[CustomerClubController::class,'index'])->middleware('checkGate:index_customer_club_user');
            //customer log
-            Route::post('/store',[CustomerClubLogController::class,'store'])->middleware('checkGate:show_customer_club_user');
             Route::get('/show',[CustomerClubLogController::class,'show'])->middleware('checkGate:show_customer_club_user');
             Route::delete('delete/{customerClubLog}',[CustomerClubLogController::class,'destroy'])->middleware('checkGate:show_customer_club_user');
           //add to level new
@@ -494,6 +506,8 @@ Route::middleware('auth:api')->group(function () {
             Route::get('show/{productsSold}',[ProductSoldController::class,'show'])->middleware('checkGate:show_productsSold');
             Route::delete('delete/{productsSold}',[ProductSoldController::class,'destroy'])->middleware('checkGate:delete_productsSold');
 
+            //فروش کل user
+            Route::get('total_price',[ProductSoldController::class,'total_price'])->middleware('checkGate:show_productsSold');
         });
 
         //user profile
@@ -588,6 +602,15 @@ Route::middleware('auth:api')->group(function () {
         Route::prefix('product')->name('product')->group(function (){
             Route::get('/',[Product1Controller::class,'index'])->middleware('checkGate:product_index');
             Route::get('/show/{product}',[Product1Controller::class,'show'])->middleware('checkGate:product_show');
+
+            //حبوب ترین ها
+            Route::get('favorites',[Product1Controller::class,'favorites'])->middleware('checkGate:product_index');
+
+            //پست های اخیر
+            Route::get('recent/posts',[Product1Controller::class,'recentPosts'])->middleware('checkGate:product_index');
+
+            //پیشنهادات برای یوزر
+            Route::get('suggestions/for/you',[Product1Controller::class,'suggestionsForYou'])->middleware('checkGate:product_index');
         });
 
         //orders
@@ -626,6 +649,11 @@ Route::middleware('auth:api')->group(function () {
             Route::delete('/delete/{productStylist}',[StylistProductController::class,'destroy'])->middleware('checkGate:delete_product_stylist');
         });
 
+        //دیدن محصول
+        Route::prefix('stylist/show/products')->name('show.product')->group(function (){
+            Route::get('/index',[Product1Controller::class,'index'])->middleware('checkGate:index_product_stylist');
+            Route::get('/show/{product}',[Product1Controller::class,'show'])->middleware('checkGate:show_product_stylist');
+        });
         //edit
         Route::prefix('stylist')->name('stylist')->group(function (){
             Route::get('/show/{stylist}',[StylistController::class,'show'])->middleware('checkGate:show_stylist_center');

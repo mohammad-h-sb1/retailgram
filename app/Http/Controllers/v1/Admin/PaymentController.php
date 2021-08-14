@@ -198,13 +198,18 @@ class PaymentController extends Controller
                    'province_id'=>$request->province_id,
                    'city_id'=>$request->city_id,
                    'count'=>$request->count,
+                   'total_price'=>$payment->amount,
                    'status'=>1
                ];
+
                 $productSold=ProductSold::create($data);
                 return response()->json([
                     'status'=>'ok',
                     'data'=>new ProductSoldCollection($productSold)
                 ]);
+            }
+            if ($payment->status == 1){
+
             }
         }
         else{
